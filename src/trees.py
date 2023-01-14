@@ -4,6 +4,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 import copy
+from timeit import default_timer as timer
 
 #########################################################################################
 #############################Each EDP belong to a Structure##################################################
@@ -59,11 +60,99 @@ def oneTree(graph_copy, edps, reverse=False):
                     if graph_copy.nodes[edge[1]]["attr"] == "d":
                         graph_copy[edge[0]][edge[1]]["attr"] = str(number_tree)
                 iteration += 1
+        number_tree = number_tree + 1 if not reverse else number_tree - 1
 #################################################################################################
 ######################################End OneTree#########################################################
 #################################################################################################
+######################################Begin MultipleTree#########################################################
+#################################################################################################
 
 
+def multipletree(graph_copy, edps):
+    number_tree = 1
+    for edp in edps:
+        number_of_nodes_added = 0
+        for i in range(1, len(edp) - 1):
+            path_list = [edp[i]]
+            iteration = 0
+            while (iteration < len(path_list)):
+                adjacent_edges_of_node = list(
+                    graph_copy.edges(path_list[iteration]))
+                edges_belong_no_structure = (edge for edge in adjacent_edges_of_node if
+                                             graph_copy.get_edge_data(edge[0], edge[1]).get("attr") == "0")
+                for edge in edges_belong_no_structure:
+                    node_incident_attrs = [
+                        graph_copy[e[0]][e[1]]["attr"] for e in graph_copy.edges(edge[1])]
+                    if str(number_tree) not in node_incident_attrs and graph_copy[edge[0]][edge[1]]["attr"] == "0" and graph_copy.nodes[edge[1]]["attr"] != "s" and graph_copy.nodes[edge[1]]["attr"] != "d":
+                        graph_copy.nodes[edge[0]][edge[1]
+                                                  ]["attr"] = str(number_tree)
+                        graph_copy.nodes[edge[1]]["attr"] = str(number_tree)
+                        path_list.append(edge[1])
+                        number_of_nodes_added += 1
+                    if graph_copy.nodes[edge[1]]["attr"] == "d":
+                        graph_copy[edge[0]][edge[1]]["attr"] = str(number_tree)
+                iteration += 1
+        number_tree += 1
+
+
+###############################################################################################
+#################################################################################################
+def routing(source, destination, failedEdges, graph):
+
+    # copy of the original Graph
+    g_copy = copy.deepcopy(graph)
+
+    shortest_path = computeShortestPath(
+        graph, source, destination, failedEdges)
+
+    # Assign the nodes and edges attribut 0
+    nx.set_edge_attributes(g_copy, "0", "attr")
+    nx.set_node_attributes(g_copy, "0", "attr")
+
+    # Assign source and destination node 's' and 'd' attributes respectively
+    g_copy.nodes[list_of_nodes[source]]["attr"] = "s"
+    g_copy.nodes[list_of_nodes[source]]["label"] = "s"
+
+    g_copy.nodes[list_of_nodes[destination]]["label"] = "d"
+    g_copy.nodes[list_of_nodes[destination]]["label"] = "d"
+
+    try:
+        build_time_edps = timer()
+        edps = list(nx.edge_disjoint_paths(g_copy, source, destination))
+    except:
+        # that means that the destination cannot be reached
+        return (True, 0, 0, [])
+
+    # Sort the computed edps
+    edps.sort(key=lambda x: len(x), reverse=False)
+
+    #################################################################################################
+    # remove failed edges and compute the shortest path
+
+    def computeShortestPath(graph, source, destination, failedEdges):
+        graph.remove_edges_from(failedEdges)
+        try:
+            shortest_path = nx.shortest_path_length(graph, source, destination)
+        except nx.NetworkXNoPath:
+            shortest_path = -1
+        return shortest_path
+#################################################################################################
+    # number the paths
+
+    def giveThePathsNumbers(graph, edps):
+        number_path = 1
+        for edp in edps:
+            for i in range(0, len(edp) - 1):
+                if graph.nodes[edp[i+1]]["attr"] != "d":
+                    graph.nodes[edp[i+1]]["attr"] = str(number_path)
+                graph.nodes[edp[i]][edp[i+1]]["attr"] = str(number_path)
+            number_path += 1
+        build_finished = timer()
+        time_of_build = build_finished - build_time_edps
+
+
+#################################################################################################
+#################################################################################################
 G = nx.Graph()
 
 G.add_node("s")
@@ -116,6 +205,12 @@ if G.nodes[list_of_nodes[source]]["attr"] == "0":
     x = True
 print(x)
 
+first_path = paths[0]
+node_candidate_incident_attrs = [G[e[0]][e[1]]["attr"]
+                                 for e in G.edges(first_path[3])]
+print(node_candidate_incident_attrs)
+print(G.edges("e"))
+
 nx.draw(G, with_labels=1, node_color='red', pos=pos)
 plt.show()
 
@@ -123,9 +218,3 @@ plt.show()
 g_copy = copy.deepcopy(G)
 nx.set_edge_attributes(g_copy, "0", "attr")
 nx.set_node_attributes(g_copy, "0", "attr")
-
-g_copy.nodes[list_of_nodes[source]]["attr"] = "s"
-g_copy.nodes[list_of_nodes[source]]["label"] = "s"
-
-g_copy.nodes[list_of_nodes[destination]]["label"] = "d"
-g_copy.nodes[list_of_nodes[destination]]["label"] = "d"
