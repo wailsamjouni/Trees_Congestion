@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import copy
 from timeit import default_timer as timer
 
+
 #########################################################################################
 #############################Each EDP belong to a Structure##################################################
 
@@ -56,12 +57,43 @@ def oneTree(graph_copy, edps, reverse=False):
 
                         path_list.append(edge[1])
                         number_of_nodes_added += 1
-
                     if graph_copy.nodes[edge[1]]["attr"] == "d":
                         graph_copy[edge[0]][edge[1]]["attr"] = str(number_tree)
                 iteration += 1
+            print(path_list)
         number_tree = number_tree + 1 if not reverse else number_tree - 1
+
 #################################################################################################
+
+
+def oneTreeImplementation(graph_copy, edp):
+    number_tree = 1
+    # if reverse:
+    #     edps.reverse()
+    #     number_tree = len(edps)
+    # else:
+    #     number_tree = 1
+    number_of_nodes_added = 0
+    for i in range(1, len(edp) - 1):
+        path_list = edp
+        print(path_list)
+        iteration = 0
+        while (iteration < len(path_list)):
+            adjacent_edges_of_node = list(
+                graph_copy.edges(path_list[iteration]))
+            edges_belong_no_structure = (edge for edge in adjacent_edges_of_node if
+                                         graph_copy.get_edge_data(edge[0], edge[1]).get("attr") == "0")
+            for edge in edges_belong_no_structure:
+                if graph_copy.nodes[edge[1]]["attr"] == "0":
+                    graph_copy[edge[0]][edge[1]]["attr"] = str(number_tree)
+                    graph_copy.nodes[edge[1]]["attr"] = str(number_tree)
+
+                    path_list.append(edge[1])
+                    number_of_nodes_added += 1
+                if graph_copy.nodes[edge[1]]["attr"] == "d":
+                    graph_copy[edge[0]][edge[1]]["attr"] = str(number_tree)
+            iteration += 1
+    print(path_list)
 ######################################End OneTree#########################################################
 #################################################################################################
 ######################################Begin MultipleTree#########################################################
@@ -97,7 +129,7 @@ def multipletree(graph_copy, edps):
 
 ###############################################################################################
 #################################################################################################
-def routing(source, destination, failedEdges, graph):
+def routing(source, destination, failedEdges, graph, version="one"):
 
     # copy of the original Graph
     g_copy = copy.deepcopy(graph)
@@ -126,6 +158,37 @@ def routing(source, destination, failedEdges, graph):
     # Sort the computed edps
     edps.sort(key=lambda x: len(x), reverse=False)
 
+    # number the paths
+    giveThePathsNumbers(g_copy, edps, build_time_edps)
+
+    # Give the failededges attr "failed" True value
+    for fail in failedEdges:
+        g_copy[fail[0]][fail[1]]["failed"] = True
+
+    # Building of trees either one or multiple tree
+    startTreeBuilding = timer()
+    if version == "one":
+        oneTree(g_copy, edps, reverse=True)
+    else:
+        multipletree(g_copy, edps)
+    endBuildingTree = timer()
+    Timetaken = endBuildingTree - startTreeBuilding
+
+    # Remove destination edges from all structures
+    destination_incidents = removeDestinationIncidentFromAllStructures(
+        g_copy, destination)
+
+    # Find the edges of the source node
+    source_incidents = findTheIncidentsOfSource(g_copy, source)
+
+    # truncate the trees to remove unwanted branches
+    startTreeTruncating = timer()
+
+    endTreeTruncating = timer()
+    timeTruncating = endTreeTruncating - startTreeTruncating
+
+    #################################################################################################
+    #################################################################################################
     #################################################################################################
     # remove failed edges and compute the shortest path
 
@@ -139,7 +202,7 @@ def routing(source, destination, failedEdges, graph):
 #################################################################################################
     # number the paths
 
-    def giveThePathsNumbers(graph, edps):
+    def giveThePathsNumbers(graph, edps, build_time_edps):
         number_path = 1
         for edp in edps:
             for i in range(0, len(edp) - 1):
@@ -150,9 +213,51 @@ def routing(source, destination, failedEdges, graph):
         build_finished = timer()
         time_of_build = build_finished - build_time_edps
 
+    def removeDestinationIncidentFromAllStructures(graph, destination):
+        destination_incidents = set()
+        for destination_edge in graph.edges(destination):
+            destination_incidents.add(destination_edge[1])
+            graph[destination_edge[0]][destination_edge[1]]["attr"] = -1
+        return destination_incidents
 
-#################################################################################################
-#################################################################################################
+    def findTheIncidentsOfSource(graph, source):
+        source_incidents = set()
+        for source_edge in graph.edges(source):
+            source_incidents.add(source_edge[1])
+        return source_incidents
+
+    def truncateTreesBranches(graph, source, source_incidents, destination_incidents, edps, tree_attributes=None):
+        trees_attributes = []
+        if tree_attributes is None:
+            for u, v, data in graph.edges(data=True):
+                if data["attr"] not in trees_attributes and int(data["attr"]) > 0:
+                    trees_attributes.append(data["attr"])
+        else:
+            trees_attributes.append(tree_attributes)
+
+        # Reconstructing all the trees
+        for attribute in trees_attributes:
+            Tree = nx.Graph()
+            for u, v, data in graph.edges(data=True):
+                if data["attr"] == attribute:
+                    Tree.add_edge(u, v)
+            node_list = list(Tree.nodes)
+
+            # If the source node in the tree
+            if source in node_list:
+                depth_first_search = list(nx.dfs_labeled_edges(Tree, source))
+                for firstNode, secondNode, label in depth_first_search:
+                    # Either "forward", "nontree" or "reverse"
+                    # nontree edge is one in which both u and v have been visited but the edge is not in the DFS tree.
+                    if label == "nontree":
+                        depth_first_search.remove(
+                            (firstNode, secondNode, label))
+                    visited_nodes = set()
+                    visited_nodes.add(depth_first_search[0][0])
+
+
+        #################################################################################################
+        #################################Create Graph##################################################
 G = nx.Graph()
 
 G.add_node("s")
@@ -169,7 +274,8 @@ G.add_node("k")
 G.add_node("l")
 G.add_node("d")
 
-G.add_edges_from([("s", "a"), ("s", "b")])
+G.add_edges_from([("s", "a")])
+# G.add_edges_from([("s", "a"), ("s", "b")])
 G.add_edges_from([("a", "c")])
 G.add_edges_from([("c", "e")])
 G.add_edges_from([("e", "f"), ("e", "d"), ("e", "h")])
@@ -185,8 +291,14 @@ G.add_edges_from([("k", "l")])
 pos = {"s": [0, 0], "a": [2, 1], "b": [2, -1], "c": [4, 2], "e": [6, 1], "f": [8, 2], "g": [10,
                                                                                             2], "h": [9, -0.3], "d": [12, 1], "i": [14, 1], "k": [6, -1], "l": [12, -1], "j": [14, -0.6]}
 
+# The source and the destination node have their own separate attributes ('s' and 'd' respectively)
 nx.set_edge_attributes(G, "0", "attr")
 nx.set_node_attributes(G, "0", "attr")
+
+G.nodes["s"]["attr"] = "s"
+G.nodes["s"]["label"] = "s"
+G.nodes["d"]["attr"] = "d"
+G.nodes["d"]["label"] = "d"
 
 node_attr = nx.get_node_attributes
 edge_attr = nx.get_edge_attributes
@@ -197,24 +309,13 @@ destination = list_of_nodes.index("d")
 
 paths = list(nx.edge_disjoint_paths(
     G, "s", "d"))
-print(len(paths))
-print(paths[0])
-x = False
-list_of_incident_edges = list(G.edges(paths[0][0]))
-if G.nodes[list_of_nodes[source]]["attr"] == "0":
-    x = True
-print(x)
+paths.sort(key=lambda x: len(x), reverse=True)
 
-first_path = paths[0]
-node_candidate_incident_attrs = [G[e[0]][e[1]]["attr"]
-                                 for e in G.edges(first_path[3])]
-print(node_candidate_incident_attrs)
-print(G.edges("e"))
+my_edp = paths[0]
+# nx.draw(G.subgraph(extended_path), pos=pos,
+#         node_color="blue", edge_color='blue')
+oneTreeImplementation(G, my_edp)
+# nx.draw(G.subgraph(paths[1]), pos=pos, node_color="blue", edge_color='blue')
 
 nx.draw(G, with_labels=1, node_color='red', pos=pos)
 plt.show()
-
-
-g_copy = copy.deepcopy(G)
-nx.set_edge_attributes(g_copy, "0", "attr")
-nx.set_node_attributes(g_copy, "0", "attr")
