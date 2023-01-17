@@ -169,7 +169,7 @@ def routing(source, destination, failedEdges, graph, version="one"):
     # Building of trees either one or multiple tree
     startTreeBuilding = timer()
     if version == "one":
-        oneTree(g_copy, edps, reverse=True)
+        oneTreeImplementation(g_copy, edps, reverse=True)
     else:
         multipletree(g_copy, edps)
     endBuildingTree = timer()
