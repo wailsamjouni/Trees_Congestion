@@ -25,6 +25,10 @@ class GraphStructure:
         edge_disjoint_paths.sort(key=lambda x: len(x), reverse=False)
         return edge_disjoint_paths
 
+    def is_spanning_tree(self):
+        return len(list(
+            nx.edge_disjoint_paths(self.graph, self.source, self.destination))) == 1
+
     def number_the_computed_edps(self, edge_disjoint_paths):
         number_tree = 1
         for edge_disjoint_path in edge_disjoint_paths:                                                    #
@@ -39,11 +43,12 @@ class GraphStructure:
             number_tree += 1
         # return self.graph
 
-    def compute_shortest_path(self, source, destination, failedEdges):
-        self.graph.remove_edges_from(failedEdges)
+    def compute_shortest_path(self, failedEdges):
+        graph_copy = copy.deepcopy(self.graph)
+        graph_copy.remove_edges_from(failedEdges)
         try:
             shortest_path = nx.shortest_path_length(
-                self.graph, source, destination)
+                graph_copy, self.source, self.destination)
         except nx.NetworkXNoPath:
             shortest_path = -1
         return shortest_path
@@ -88,6 +93,27 @@ class GraphStructure:
     def set_failed_edges(self, failed_edges):
         for failed_edge in failed_edges:
             self.graph[failed_edge[0]][failed_edge[1]]["failed"] = True
+
+    def remove_failed_edges(self, failed_edges):
+        self.graph.remove_edges_from(failed_edges)
+        print(f"Those edges are removed : {failed_edges}")
+
+    def edps_in_ascending_order(edge_disjoint_paths):
+        edge_disjoint_paths.reverse()
+
+    def convert_path_to_edges(edge_disjoint_path):
+        path_edges = [(edge_disjoint_path[i], edge_disjoint_path[i+1])
+                      for i in range(len(edge_disjoint_path) - 1)]
+        return path_edges
+
+    def is_source_still_reachable(self):
+        return nx.has_path(self.graph, self.source, self.destination)
+
+    def failed_in_all_edps(edge_disjoint_paths, failed_edges):
+        def failed_in_edp(edge_disjoin_path):
+            return any(failed_edge in failed_edges for failed_edge in edge_disjoin_path)
+        return all(failed_in_edp(edge_disjoint_path) for edge_disjoint_path in edge_disjoint_paths)
+
 # ----------------------------------------------------Tree Algorithms --------------------------------------------
 
     def oneTree(self, edge_disjoint_paths, reverse=False):
@@ -115,6 +141,11 @@ class GraphStructure:
                 if edge_attr_value == "d":
                     self.graph[edge[0]][edge[1]]["attr"] = str(tree_attribute)
             iteration = iteration + 1
+        Tree = nx.Graph()
+        for first_node, second_node, data in self.graph.edges(data=True):
+            if data["attr"] == "1":
+                Tree.add_edge(first_node, second_node)
+        return Tree
 
     def multipleTree(self, edge_disjoint_paths):
         number_tree = 1
@@ -197,3 +228,68 @@ class GraphStructure:
                         f"The {i}-th iteration not incident: {branches_to_keep}")
                     exist_node_to_delete = True
         return self.graph
+
+    def one_tree_routing(self, one_tree, failed_edges, edge_disjoint_paths, number_of_nodes, number_of_nodes_after):
+        dfs_from_cutted_edges = set()
+        for failed_edge in failed_edges:
+            if failed_edge in one_tree.edges():
+                one_tree.remove_edge(failed_edge)
+                dfs_from_cutted_edges.add(failed_edge)
+        if len(edge_disjoint_paths) == 1 and number_of_nodes == number_of_nodes_after:
+            if nx.is_connected(self.graph):
+                spanning_tree = nx.minimum_spanning_tree(one_tree)
+                shortest_path = nx.shortest_path(
+                    one_tree, source=self.source, target=self.destination)
+                return shortest_path
+            else:
+                print("No spanning tree can be built.")
+        else:
+
+            # Welche Node soll ich nehmen aus der Kante (u,v)
+            for edge in dfs_from_cutted_edges:
+                visited_nodes = set()
+                paths_to_destination = []
+
+                def dfs(node, path_to_destination):
+                    if node not in visited_nodes:
+                        visited_nodes.add(node)
+                        path_to_destination.append(node)
+                        if node == self.destination:
+                            paths_to_destination.append(path_to_destination[:])
+                        else:
+                            for neighbor in one_tree.neighbors(node):
+                                dfs(neighbor, path_to_destination)
+                        path_to_destination.pop()
+                    return paths_to_destination
+
+                sorted_paths = sorted(dfs(edge[0], []), key=len, reverse=False)
+
+                if len(sorted_paths) == 0:
+                    print(
+                        f"Destination cannot be reached from the node {edge[0]}")
+                else:
+                    paths_without_source = []
+
+                    for path in sorted_paths:
+                        if self.source not in path:
+                            paths_without_source.append(path)
+                            sorted_paths.remove(path)
+
+                    paths_with_source = sorted_paths
+
+                    if len(paths_without_source) > 0:
+                        my_path = paths_without_source[0]
+                        path_edges = [(my_path[i], my_path[i+1])
+                                      for i in range(len(my_path) - 1)]
+                        print(
+                            f"The destination can be reached from the node {edge[0]} by the path : {my_path}")
+                        return my_path, path_edges
+                    elif len(paths_with_source) > 0:
+                        my_path = paths_with_source[0]
+                        path_edges = [(my_path[i], my_path[i+1])
+                                      for i in range(len(my_path) - 1)]
+                        print(
+                            f"The destination can be reached from the node {edge[0]} by the path : {my_path}")
+                        return my_path, path_edges
+                    else:
+                        continue
