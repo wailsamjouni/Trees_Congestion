@@ -7,6 +7,9 @@ class Build:
     def __init__(self, graph_structure: GraphStructure):
         self.graph_structure = graph_structure
 
+    def number(self):
+        return self.graph_structure.graph.number_of_nodes()
+
     def build(self):
         number_of_nodes = self.graph_structure.graph.number_of_nodes()
         self.graph_structure.give_attrs_to_graph()
@@ -62,20 +65,20 @@ class Build:
 
         self.graph_structure.edps_in_ascending_order(edge_disjoint_paths)
 
-        isReachable = self.graph_structure.is_source_still_reachable()
+        # isReachable = self.graph_structure.is_source_still_reachable()
 
-        if isReachable:
-            print(shortest_path_after_removing_failededges, "still a path from", self.graph_structure.source, "to",
-                  self.graph_structure.destination, "in the modified graph")
+        # if isReachable:
+        #     print(shortest_path_after_removing_failededges, "still a path from", self.graph_structure.source, "to",
+        #           self.graph_structure.destination, "in the modified graph")
 
-            # calculate Edps again
-            edps_after_cut_edges = list(nx.edge_disjoint_paths(
-                self.graph_structure.graph, self.graph_structure.source, self.graph_structure.destination))
-            common_edge_disjoint_paths = set(
-                edge_disjoint_paths).intersection(edps_after_cut_edges)
-            if len(common_edge_disjoint_paths) != 0:
-                print(
-                    f"We still can reach the destination from the source using those originl edge disjoint paths : {common_edge_disjoint_paths}")
+        #     # calculate Edps again
+        #     edps_after_cut_edges = list(nx.edge_disjoint_paths(
+        #         self.graph_structure.graph, self.graph_structure.source, self.graph_structure.destination))
+        #     common_edge_disjoint_paths = set(
+        #         edge_disjoint_paths).intersection(edps_after_cut_edges)
+        #     if len(common_edge_disjoint_paths) != 0:
+        #         print(
+        #             f"We still can reach the destination from the source using those originl edge disjoint paths : {common_edge_disjoint_paths}")
 
-        else:
-            print("The destination cannot be reached anymore")
+        # else:
+        #     print("The destination cannot be reached anymore")

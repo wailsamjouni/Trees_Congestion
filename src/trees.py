@@ -6,9 +6,12 @@ import matplotlib.pyplot as plt
 import copy
 from timeit import default_timer as timer
 from GraphStructure import GraphStructure
-from TreesAlgorithms import TreesAlgorithms
+from Graph import Graph
+# from TreesAlgorithms import TreesAlgorithms
 from networkx.algorithms.traversal.depth_first_search import dfs_tree
 from networkx.algorithms.simple_paths import all_simple_paths
+from Build import Build
+
 
 #########################################################################################
 #############################Each EDP belong to a Structure##################################################
@@ -78,23 +81,14 @@ G.nodes["s"]["label"] = "s"
 G.nodes["d"]["attr"] = "d"
 G.nodes["d"]["label"] = "d"
 
-structure = GraphStructure(G, "s", "d")
-graph = structure.give_attrs_to_graph()
-d_incidents = structure.find_destination_incidents()
+# g1 = nx.Graph(nx.read_graphml('dataset.graphml'))
+# nx.draw(g1, with_labels=True)
+# plt.show()
+
+
+# test_graph.save_to_file('graph2217.pkl')
+# test_graph.draw()
+structure = GraphStructure(test_graph.get_graph(), 1, 17)
 edps = structure.compute_and_sort_edps()
-
-graph_numbered = structure.number_the_computed_edps(edps)
-node_attr = nx.get_node_attributes(graph, "attr")
-# print(node_attr)
-
-structure.oneTree(edps, reverse=True)
-structure.disconnect_the_edges_of_the_destination()
-
-pruned_graph = structure.prune_branches_from_tree("2", d_incidents)
-
-edges_with_weight_0 = [(u, v)
-                       for u, v in pruned_graph.edges() if pruned_graph.edges[u, v]["attr"] == "2"]
-print(edges_with_weight_0)
-
-nodes_with_color_0 = [node for node in pruned_graph.nodes(
-) if "attr" in pruned_graph.nodes[node] and pruned_graph.nodes[node]["attr"] == "2"]
+# print(edps)
+# structure.colorize_paths(edps)
