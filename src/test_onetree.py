@@ -10,7 +10,9 @@ generate_graph = Graph(8, 8, filename='graph88.pkl')
 # generate_graph = Graph(8, 8, filename='graph1110.pkl')  # Important
 # generate_graph.save_to_file('graph88.pkl')
 
-g_copy = GraphStructure(generate_graph.get_graph(), 1, 7)
+g_copy = GraphStructure(generate_graph.get_graph(),
+                        0, 5)
+
 g_copy.build(0.4, "onetree")
 
 

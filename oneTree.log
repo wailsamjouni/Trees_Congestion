@@ -1,0 +1,16 @@
+2023-02-15 13:43:36,408 INFO: The edps are in descending order
+2023-02-15 13:43:36,408 INFO: The node 4 has now the attribute 1
+2023-02-15 13:43:36,408 DEBUG: The edge (0, 4) has now the atttirbute 1
+2023-02-15 13:43:36,408 DEBUG: Node 4 has been added to the path [0, 7, 2, 5, 4]
+2023-02-15 13:43:36,408 INFO: The node 3 has now the attribute 1
+2023-02-15 13:43:36,408 DEBUG: The edge (7, 3) has now the atttirbute 1
+2023-02-15 13:43:36,408 DEBUG: Node 3 has been added to the path [0, 7, 2, 5, 4, 3]
+2023-02-15 13:43:36,408 INFO: The node 3 has now the attribute 1
+2023-02-15 13:43:36,409 DEBUG: The edge (2, 3) has now the atttirbute 1
+2023-02-15 13:43:36,409 DEBUG: Node 3 has been added to the path [0, 7, 2, 5, 4, 3, 3]
+2023-02-15 13:43:36,409 INFO: The node 6 has now the attribute 1
+2023-02-15 13:43:36,409 DEBUG: The edge (3, 6) has now the atttirbute 1
+2023-02-15 13:43:36,409 DEBUG: Node 6 has been added to the path [0, 7, 2, 5, 4, 3, 3, 6]
+2023-02-15 13:43:36,409 INFO: The node 1 has now the attribute 1
+2023-02-15 13:43:36,409 DEBUG: The edge (3, 1) has now the atttirbute 1
+2023-02-15 13:43:36,409 DEBUG: Node 1 has been added to the path [0, 7, 2, 5, 4, 3, 3, 6, 1]

@@ -1,0 +1,11 @@
+2023-02-15 13:43:36,405 INFO: EDPS between 0 and 5 are :[[0, 7, 2, 5]]
+2023-02-15 13:43:36,405 INFO: Attributes before extending EDP : {(0, 4): '0', (0, 7): '0', (1, 3): '0', (2, 7): '0', (2, 3): '0', (2, 5): '0', (3, 7): '0', (3, 6): '0'}
+2023-02-15 13:43:36,406 INFO: Destination neighbors are : {2}
+2023-02-15 13:43:36,407 INFO: Attributes after numbering the EDPs : {(0, 4): '0', (0, 7): '0', (1, 3): '0', (2, 7): '0', (2, 3): '0', (2, 5): '0', (3, 7): '0', (3, 6): '0'}
+2023-02-15 13:43:36,407 INFO: Shortest path after removing failed edges: 4
+2023-02-15 13:43:36,409 DEBUG: One tree choosed
+2023-02-15 13:43:36,409 INFO: Updated edps between 0 and 5 are : [[0, 7, 2, 5]]
+2023-02-15 13:43:36,409 INFO: Attributes after building one tree : {(0, 4): '1', (0, 7): '1', (1, 3): '1', (2, 7): '1', (2, 3): '1', (2, 5): '1', (3, 7): '1', (3, 6): '1'}
+2023-02-15 13:43:36,415 DEBUG: Attributes after pruning the tree : {(0, 4): '0', (0, 7): '1', (1, 3): '0', (2, 3): '1', (2, 5): '-1', (3, 7): '1', (3, 6): '0'}
+2023-02-15 13:43:36,420 INFO: Routing has just begun
+2023-02-15 13:43:36,420 DEBUG: Tree with attr 1 is : [(0, 7), (7, 3), (2, 3)]
