@@ -696,7 +696,7 @@ class GraphStructure:
 
     def path_has_failure(self, edge_disjoint_path, failed_edges):
 
-        logger = self._get_logger('edge_has_failure.log')
+        logger = self._get_logger('path_has_failure.log')
 
         path_edges = [(edge_disjoint_path[i], edge_disjoint_path[i+1])
                       for i in range(len(edge_disjoint_path) - 1)]
