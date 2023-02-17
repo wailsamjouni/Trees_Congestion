@@ -1,25 +1,25 @@
-2023-02-17 15:21:59,121 INFO: The edps are in descending order
-2023-02-17 15:21:59,122 INFO: The node 4 has now the attribute 1
-2023-02-17 15:21:59,122 DEBUG: The edge (0, 4) has now the atttirbute 1
-2023-02-17 15:21:59,122 DEBUG: Node 4 has been added to the path [0, 2, 10, 5, 4]
-2023-02-17 15:21:59,122 INFO: The node 1 has now the attribute 1
-2023-02-17 15:21:59,122 DEBUG: The edge (2, 1) has now the atttirbute 1
-2023-02-17 15:21:59,123 DEBUG: Node 1 has been added to the path [0, 2, 10, 5, 4, 1]
-2023-02-17 15:21:59,123 INFO: The node 7 has now the attribute 1
-2023-02-17 15:21:59,123 DEBUG: The edge (2, 7) has now the atttirbute 1
-2023-02-17 15:21:59,123 DEBUG: Node 7 has been added to the path [0, 2, 10, 5, 4, 1, 7]
-2023-02-17 15:21:59,123 INFO: The node 8 has now the attribute 1
-2023-02-17 15:21:59,123 DEBUG: The edge (2, 8) has now the atttirbute 1
-2023-02-17 15:21:59,123 DEBUG: Node 8 has been added to the path [0, 2, 10, 5, 4, 1, 7, 8]
-2023-02-17 15:21:59,123 INFO: The node 3 has now the attribute 1
-2023-02-17 15:21:59,123 DEBUG: The edge (1, 3) has now the atttirbute 1
-2023-02-17 15:21:59,124 DEBUG: Node 3 has been added to the path [0, 2, 10, 5, 4, 1, 7, 8, 3]
-2023-02-17 15:21:59,124 INFO: The node 6 has now the attribute 1
-2023-02-17 15:21:59,124 DEBUG: The edge (1, 6) has now the atttirbute 1
-2023-02-17 15:21:59,124 DEBUG: Node 6 has been added to the path [0, 2, 10, 5, 4, 1, 7, 8, 3, 6]
-2023-02-17 15:21:59,124 INFO: The node 6 has now the attribute 1
-2023-02-17 15:21:59,125 DEBUG: The edge (8, 6) has now the atttirbute 1
-2023-02-17 15:21:59,125 DEBUG: Node 6 has been added to the path [0, 2, 10, 5, 4, 1, 7, 8, 3, 6, 6]
-2023-02-17 15:21:59,125 INFO: The node 9 has now the attribute 1
-2023-02-17 15:21:59,125 DEBUG: The edge (8, 9) has now the atttirbute 1
-2023-02-17 15:21:59,125 DEBUG: Node 9 has been added to the path [0, 2, 10, 5, 4, 1, 7, 8, 3, 6, 6, 9]
+2023-02-17 15:27:18,045 INFO: The edps are in descending order
+2023-02-17 15:27:18,046 INFO: The node 4 has now the attribute 1
+2023-02-17 15:27:18,046 DEBUG: The edge (0, 4) has now the atttirbute 1
+2023-02-17 15:27:18,046 DEBUG: Node 4 has been added to the path [0, 2, 10, 5, 4]
+2023-02-17 15:27:18,047 INFO: The node 1 has now the attribute 1
+2023-02-17 15:27:18,047 DEBUG: The edge (2, 1) has now the atttirbute 1
+2023-02-17 15:27:18,047 DEBUG: Node 1 has been added to the path [0, 2, 10, 5, 4, 1]
+2023-02-17 15:27:18,047 INFO: The node 7 has now the attribute 1
+2023-02-17 15:27:18,047 DEBUG: The edge (2, 7) has now the atttirbute 1
+2023-02-17 15:27:18,047 DEBUG: Node 7 has been added to the path [0, 2, 10, 5, 4, 1, 7]
+2023-02-17 15:27:18,047 INFO: The node 8 has now the attribute 1
+2023-02-17 15:27:18,048 DEBUG: The edge (2, 8) has now the atttirbute 1
+2023-02-17 15:27:18,048 DEBUG: Node 8 has been added to the path [0, 2, 10, 5, 4, 1, 7, 8]
+2023-02-17 15:27:18,048 INFO: The node 3 has now the attribute 1
+2023-02-17 15:27:18,048 DEBUG: The edge (1, 3) has now the atttirbute 1
+2023-02-17 15:27:18,048 DEBUG: Node 3 has been added to the path [0, 2, 10, 5, 4, 1, 7, 8, 3]
+2023-02-17 15:27:18,048 INFO: The node 6 has now the attribute 1
+2023-02-17 15:27:18,049 DEBUG: The edge (1, 6) has now the atttirbute 1
+2023-02-17 15:27:18,049 DEBUG: Node 6 has been added to the path [0, 2, 10, 5, 4, 1, 7, 8, 3, 6]
+2023-02-17 15:27:18,049 INFO: The node 6 has now the attribute 1
+2023-02-17 15:27:18,049 DEBUG: The edge (8, 6) has now the atttirbute 1
+2023-02-17 15:27:18,049 DEBUG: Node 6 has been added to the path [0, 2, 10, 5, 4, 1, 7, 8, 3, 6, 6]
+2023-02-17 15:27:18,049 INFO: The node 9 has now the attribute 1
+2023-02-17 15:27:18,049 DEBUG: The edge (8, 9) has now the atttirbute 1
+2023-02-17 15:27:18,050 DEBUG: Node 9 has been added to the path [0, 2, 10, 5, 4, 1, 7, 8, 3, 6, 6, 9]

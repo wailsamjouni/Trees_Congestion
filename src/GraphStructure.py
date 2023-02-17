@@ -130,29 +130,29 @@ class GraphStructure:
 
             number_tree += 1
 
-    def compute_shortest_path(self, failedEdges):
+    # def compute_shortest_path(self, failedEdges):
 
-        logger = self._get_logger('compute_shortest_path.log')
+    #     logger = self._get_logger('compute_shortest_path.log')
 
-        graph_copy = copy.deepcopy(self.graph)
-        logger.debug(f'A copy of the original graph has been created')
+    #     graph_copy = copy.deepcopy(self.graph)
+    #     logger.debug(f'A copy of the original graph has been created')
 
-        graph_copy.remove_edges_from(failedEdges)
-        logger.debug(
-            f'The edges {failedEdges} have been removed from the copied graph')
+    #     graph_copy.remove_edges_from(failedEdges)
+    #     logger.debug(
+    #         f'The edges {failedEdges} have been removed from the copied graph')
 
-        try:
-            shortest_path = nx.shortest_path_length(
-                graph_copy, self.source, self.destination)
-            logger.debug(
-                f'The shortest path from {self.source} to {self.destination} is {shortest_path}')
+    #     try:
+    #         shortest_path = nx.shortest_path_length(
+    #             graph_copy, self.source, self.destination)
+    #         logger.debug(
+    #             f'The shortest path from {self.source} to {self.destination} is {shortest_path}')
 
-        except nx.NetworkXNoPath:
-            shortest_path = -1
-            logger.exception(
-                f'No path from {self.source} to {self.destination}')
+    #     except nx.NetworkXNoPath:
+    #         shortest_path = -1
+    #         logger.exception(
+    #             f'No path from {self.source} to {self.destination}')
 
-        return shortest_path
+    #     return shortest_path
 
     def find_destination_incidents(self):
 

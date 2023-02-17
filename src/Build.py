@@ -33,10 +33,10 @@ class Build:
         failed_edges_random = [(5, 10), (0, 2), (1, 2), (1, 6)]
         logger.warning(f'Failed edges are : {failed_edges_random}')
 
-        shortest_path_after_removing_failededges = self.graph.compute_shortest_path(
-            failed_edges_random)
-        logger.info(
-            f'Shortest path after removing failed edges: {shortest_path_after_removing_failededges}')
+        # shortest_path_after_removing_failededges = self.graph.compute_shortest_path(
+        #     failed_edges_random)
+        # logger.info(
+        #     f'Shortest path after removing failed edges: {shortest_path_after_removing_failededges}')
 
         # One tree building
         if version == "onetree":

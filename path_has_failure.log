@@ -1,2 +1,2 @@
-2023-02-17 15:21:59,175 DEBUG: Path converted to edges: [(0, 2), (2, 10), (10, 5)]
-2023-02-17 15:21:59,175 ERROR: This edge disjoint path contains edges that has been found in failed edges: [(0, 2), (10, 5)]
+2023-02-17 15:27:18,102 DEBUG: Path converted to edges: [(0, 2), (2, 10), (10, 5)]
+2023-02-17 15:27:18,102 ERROR: This edge disjoint path contains edges that has been found in failed edges: [(0, 2), (10, 5)]
