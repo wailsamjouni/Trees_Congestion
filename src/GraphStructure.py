@@ -111,6 +111,9 @@ class GraphStructure:
 
         logger = self._get_logger('number_the_computed_edps.log')
 
+        logger.info(
+            f'Number of computed edge disjoint paths is : {len(edge_disjoint_paths)}')
+
         number_tree = 1
         for edge_disjoint_path in edge_disjoint_paths:
             for i in range(0, len(edge_disjoint_path)-1):
@@ -123,7 +126,7 @@ class GraphStructure:
                 self.graph[edge_disjoint_path[i]
                            ][edge_disjoint_path[i+1]]["attr"] = str(number_tree)
             logger.debug(
-                f'The edge disjoint path number {i + 1} has the attribute {number_tree}')
+                f'The edge disjoint path number "{edge_disjoint_paths.index(edge_disjoint_path) + 1}" has the attribute {number_tree}')
 
             number_tree += 1
 
@@ -150,22 +153,6 @@ class GraphStructure:
                 f'No path from {self.source} to {self.destination}')
 
         return shortest_path
-
-    def remove_destination_incidents_from_all_structures(self, destination):
-
-        logger = self._get_logger('remove_destination_incidents.log')
-
-        destination_incidents = set()
-        for destination_edge in self.graph.edges(destination):
-            destination_incidents.add(destination_edge[1])
-            self.graph[destination_edge[0]][destination_edge[1]]["attr"] = -1
-            logger.info(
-                f'The edge ({destination_edge[0]}, {destination_edge[1]}) has now the attribute -1')
-
-        logger.debug(
-            'The incidents of the destination are {destination_incidents}')
-
-        return destination_incidents
 
     def find_destination_incidents(self):
 
@@ -223,12 +210,7 @@ class GraphStructure:
                 f'The edge ({destination_edge[0]}, {destination_edge[1]}) has now the attribute -1')
 
         logger.debug(
-            'The incidents of the destination are {destination_incidents}')
-
-    def edges_attrs_of_destination(self):
-        list_edges = nx.edge_subgraph(self.graph, [(
-            u, v) for u, v, data in self.graph.edges(data=True) if data["attr"] == "-1"])
-        return list_edges
+            f'The incidents of the destination are {destination_incidents}')
 
     def set_failed_edges(self, failed_edges):
 
@@ -250,14 +232,6 @@ class GraphStructure:
         self.graph.remove_edges_from(failed_edges)
         logger.debug(
             f'The edges {failed_edges} have been removed from the graph')
-
-    def edps_in_ascending_order(edge_disjoint_paths):
-        edge_disjoint_paths.reverse()
-
-    def convert_path_to_edges(edge_disjoint_path):
-        path_edges = [(edge_disjoint_path[i], edge_disjoint_path[i+1])
-                      for i in range(len(edge_disjoint_path) - 1)]
-        return path_edges
 
     def is_source_still_reachable(self):
         return nx.has_path(self.graph, self.source, self.destination)
@@ -311,6 +285,7 @@ class GraphStructure:
                         f'the edge ({edge[0]}, {edge[1]}) has now the attribute {tree_attribute}')
 
             iteration = iteration + 1
+        return tree_attribute
 
     def multipleTree(self, edge_disjoint_paths):
         number_tree = 1
@@ -333,7 +308,12 @@ class GraphStructure:
 
     def tree_based_edge(self, edge_disjoint_paths, edge_disjoint_path):
 
+        logger = self._get_logger("tree_based_edge.log")
+
         number_tree = edge_disjoint_paths.index(edge_disjoint_path) + 1
+        logger.info(
+            f'The number of the tree of this edge disjoint path {edge_disjoint_path} is : {number_tree}')
+
         edp_to_extend = edge_disjoint_path
         iteration = 0
         while(iteration < len(edp_to_extend)):
@@ -346,17 +326,32 @@ class GraphStructure:
 
             edges_with_zero_one = [edge for edge in list_of_incident_edges if self.graph.get_edge_data(
                 edge[0], edge[1]).get("attr") in [0, -1]]
+            logger.debug(
+                f'The edges with zero and minus one are : {edges_with_zero_one}')
 
             for edge in edges_with_zero_one:
 
                 if self.graph.nodes[edge[1]]["attr"] != "s" and self.graph.nodes[edge[1]]["attr"] != "d":
 
+                    logger.info(
+                        f'The node "{edge[1]}" is neither a source nor destination')
+
                     self.graph[edge[0]][edge[1]]["attr"] = str(number_tree)
                     self.graph.nodes[edge[1]]["attr"] = str(number_tree)
-                    edp_to_extend.append(edge[1])
+                    logger.info(
+                        f'The node "{edge[1]}" and the edge ({edge[0]},{edge[1]}) belong to tree number {number_tree}')
 
-                # if self.graph.nodes[edge[1]]["attr"] == "s" or self.graph.nodes[edge[1]]["attr"] == "d":
-                #     self.graph.nodes[edge[1]]["attr"] = str(number_tree)
+                    edp_to_extend.append(edge[1])
+                    logger.debug(
+                        f'Node "{edge[1]}" has bee added to the path to extend {edp_to_extend}')
+
+                if self.graph.nodes[edge[1]]["attr"] == "s" or self.graph.nodes[edge[1]]["attr"] == "d":
+                    logger.warning(
+                        f'The node "{edge[1]}" is either a source or destination')
+
+                    self.graph[edge[0]][edge[1]]["attr"] = str(number_tree)
+                    logger.debug(
+                        f'Edge "({edge[0]},{edge[1]})" has bee added to the path to extend {edp_to_extend}')
 
             iteration += 1
         return number_tree
@@ -456,9 +451,15 @@ class GraphStructure:
                     if self.graph[edge[0]][edge[1]]["attr"] == str(tree_attribute):
                         self.graph[edge[0]][edge[1]]["attr"] = "0"
 
+    def get_unexplored_edges(self, labeled_edges):
+        unexplored_edges = set()
+        for u, v, label in labeled_edges:
+            if label == "forward" and u != v:
+                unexplored_edges.add((u, v))
+        return unexplored_edges
+
     def prune_akt(self, destination_incident, tree_attribute):
 
-        # self.clear_log_file()
         logger = self._get_logger('prune_akt.log')
 
         leaf_nodes = ["s"]
@@ -525,6 +526,7 @@ class GraphStructure:
                     if exist_node_to_delete:
                         nx.set_node_attributes(self.graph, values={
                             v: "0"}, name="attr")
+                        logger.debug(f'Node "{v}" has attribut "0"')
                         nx.set_edge_attributes(self.graph, values={
                             (u, v): "0"}, name="attr")
 
@@ -542,10 +544,9 @@ class GraphStructure:
                             logger.debug(
                                 f'The current element and the next is "forward" and "reverse" respectively": ({direction}, {direction_next})')
 
-                        elif v in destination_incident or self.graph.degree(v) > 1:
-                            # elif v in destination_incident or self.graph.degree(v) > 1:
+                        elif v in destination_incident:
                             logger.debug(
-                                f'"{v}" is in destination_incident or degree > 1')
+                                f'"{v}" is neighbored with destination "{self.destination}"')
 
                             branches_to_keep.update(nodes_visited)
                             logger.debug(
@@ -554,49 +555,70 @@ class GraphStructure:
                 if not nx.number_connected_components(Tree) == 1:
                     logger.debug(f'The graph is not connected')
 
-                    visited_n = set()
-                    visited_e = set()
+                    visited_edges = set(nx.edge_dfs(Tree, self.source))
+                    logger.error("Visited edges from source node {}: {}".format(
+                        self.source, list(visited_edges)))
 
-                    for u, v, label in depth_first_search:
-                        if label == "forward":
-                            visited_n.add(u)
-                            visited_n.add(v)
-                            visited_e.add((u, v))
-                    unvisited_n = set(Tree.nodes) - visited_n
-                    unvisited_e = set(Tree.edges) - visited_e
+                    result_edges = []
+                    for edge in Tree.edges:
+                        if edge not in visited_edges and edge[::-1] not in visited_edges:
+                            result_edges.append(edge)
+                    logger.error("Unvisited edges from source node: {}".format(
+                        list(result_edges)))
 
-                    logger.debug(f"Unvisited edges are: {unvisited_e}")
-
-                    for edge in unvisited_e:
+                    for edge in result_edges:
                         if self.graph[edge[0]][edge[1]]["attr"] == str(tree_attribute):
-                            self.graph[0]["attr"] = "0"
-                            self.graph[1]["attr"] = "0"
-                            self.graph[edge[0]][edge[1]]["attr"] = "0"
 
-                            logger(
-                                f'Attribut 0 assigned to node : "{edge[0]} and node : "{edge[1]}"')
-
+                            nx.set_node_attributes(self.graph, values={
+                                edge[0]: "0"}, name="attr")
+                            nx.set_node_attributes(self.graph, values={
+                                                   edge[1]: "0"}, name="attr")
                             logger.debug(
-                                f"Attribut 0 assigned to edge : {(u,v)}")
+                                f'Attribut 0 assigned to node : "{edge[0]}" and node : "{edge[1]}"')
 
-            Tree_new = nx.Graph()
+                            nx.set_edge_attributes(self.graph, values={
+                                (edge[0], edge[1]): "0"}, name="attr")
+                            logger.debug(
+                                f'Attribut 0 assigned to edge : "({edge[0]},{edge[1]})"')
+
+                    # visited_n = set()
+                    # visited_e = set()
+
+                    # for u, v, label in depth_first_search:
+                    #     if label == "forward":
+                    #         visited_n.add(u)
+                    #         visited_n.add(v)
+                    #         visited_e.add((u, v))
+                    # logger.debug(f'Tree edges are: {set(Tree.edges)}')
+                    # unvisited_n = set(Tree.nodes) - visited_n
+                    # unvisited_e = set(Tree.edges) - visited_e
+
+                    # logger.debug(f"Unvisited nodes are: {unvisited_n}")
+                    # logger.debug(f"Unvisited edges are: {unvisited_e}")
 
             leaf_nodes = []
+            other_nodes_to_delete = nx.Graph()
 
             for u, v, data in self.graph.edges(data=True):
                 if int(tree_attribute) > 0 and data["attr"] == str(tree_attribute):
-                    Tree_new.add_edge(u, v)
+                    other_nodes_to_delete.add_edge(u, v)
 
             logger.debug(
-                f'Tree built to check if still exists another nodes and edges to prune: {Tree_new.edges()}')
+                f'Tree built to check if still exists another nodes and edges to prune: {other_nodes_to_delete.edges()}')
 
-            for u, v, data in Tree_new.edges(data=True):
-                if Tree_new.degree(u) == 1 and u not in destination_incident and u != self.source:
+            for u, v, data in other_nodes_to_delete.edges(data=True):
+                if other_nodes_to_delete.degree(u) == 1 and u not in destination_incident and u != self.source:
                     leaf_nodes.append(u)
 
-                elif Tree_new.degree(v) == 1 and v not in destination_incident and v != self.source:
+                elif other_nodes_to_delete.degree(v) == 1 and v not in destination_incident and v != self.source:
                     leaf_nodes.append(v)
             logger.debug(f'Leaf nodes: {leaf_nodes}')
+
+            tree = nx.Graph()
+            for u, v, data in self.graph.edges(data=True):
+                if int(tree_attribute) > 0 and data["attr"] == str(tree_attribute):
+                    tree.add_edge(u, v)
+            logger.debug(f'Tree gebildet: {tree.edges()}')
 
     def remove_unconnected_nodes(self):
 
@@ -607,7 +629,16 @@ class GraphStructure:
             if len(component) == 1:
                 node = list(component)[0]
                 self.graph.remove_node(node)
-                logger.debug(f'Node "{node}" has been removed from graph')
+        # for component in connected_components:
+        #     if len(component) == 1:
+        #         node = list(component)[0]
+        #         if self.graph.nodes[node].get("attr") != str(tree_attribute):
+        #             self.graph.remove_node(node)
+        #         logger.debug(f'Node "{node}" has been removed from graph')
+        #     else:
+        #         for node in component:
+        #             if self.graph.nodes[node].get("attr") != str(tree_attribute):
+        #                 self.graph.remove_node(node)
 
         logger.debug(
             f'Graph after removing unconnected nodes: {self.graph.edges()}')
@@ -648,37 +679,100 @@ class GraphStructure:
     def has_no_failed_edge(self, edge_disjoint_path, failed_edges):
         return not self.contains_failed_edge(edge_disjoint_path, failed_edges)
 
+    def find_path2(self, tree, destination_incidents):
+
+        logger = self._get_logger('find_path2.log')
+
+        visited_nodes = set()
+        stack = [(self.source, [self.source])]
+
+        while stack:
+            node, path = stack.pop()
+            logger.info(f'Current path is : {path}')
+            logger.info(f"Visiting node {node}")
+
+            if node in destination_incidents:
+                logger.info(f"Path found : {path}")
+                return path
+
+            visited_nodes.add(node)
+
+            for neighbor in tree.neighbors(node):
+                if neighbor not in visited_nodes:
+                    logger.info(f"Adding neighbor {neighbor} to stack")
+                    stack.append((neighbor, path + [neighbor]))
+
+        logger.error(f"Path not found")
+        return None
+
+    # def find_path(self, tree, node, destination_incidents, path):
+
+    #     logger = self._get_logger('find_path.log')
+
+    #     if self.source not in self.graph:
+
+    #         logger.error(f'Source node "{self.source}" not found in the graph')
+    #         return None
+
+    #     path += [node]
+    #     if node in destination_incidents:
+    #         logger.debug(
+    #             f'Path found between source "{self.source}" node and an incident of the destination node "{self.destination}": {path}')
+    #         return path
+
+    #     for neighbor in tree.neighbors(node):
+
+    #         if neighbor not in path:
+    #             new_path = self.find_path(
+    #                 tree, neighbor, destination_incidents, path)
+
+    #             if new_path:
+    #                 logger.info(
+    #                     f'Path found between source "{self.source}" node and an incident of the destination node "{self.destination}": {path}')
+
+    #                 return new_path
+    #     logger.error(
+    #         f'No path found between source "{self.source}" node and an incident of the destination node "{self.destination}"')
+
+    #     return None
+
     def find_path(self, tree, node, destination_incidents, path):
 
         logger = self._get_logger('find_path.log')
+        try:
+            if self.source not in self.graph:
+                raise KeyError(
+                    f'The source node "{self.source}" was not found in the graph')
 
-        if self.source not in self.graph:
+            path += [node]
+            if node in destination_incidents:
+                logger.debug(
+                    f'Path found between source "{self.source}" node and an incident of the destination node "{self.destination}": {path}')
+                return path
 
-            print("The source node not found in the graph")
-            logger.error(f'Source node "{self.source}" not found in the graph')
+            for neighbor in tree.neighbors(node):
+                if neighbor not in path:
+                    new_path = self.find_path(
+                        tree, neighbor, destination_incidents, path)
+                    if new_path:
+                        logger.info(
+                            f'Path found between source "{self.source}" node and an incident of the destination node "{self.destination}": {path}')
+                        return new_path
+
+            error_msg = f'No path found between source "{self.source}" node and an incident of the destination node "{self.destination}"'
+            logger.error(error_msg)
             return None
 
-        path += [node]
-        if node in destination_incidents:
-            logger.debug(
-                f'Path found between source "{self.source}" node and an incident of the destination node "{self.destination}": {path}')
-            return path
-
-        for neighbor in tree[node]:
-
-            if neighbor not in path:
-                new_path = self.find_path(
-                    tree, neighbor, destination_incidents, path)
-
-                if new_path:
-                    logger.info(
-                        f'Path found between source "{self.source}" node and an incident of the destination node "{self.destination}": {path}')
-
-                    return new_path
-        logger.error(
-            f'No path found between source "{self.source}" node and an incident of the destination node "{self.destination}"')
-
-        return None
+        except KeyError as error:
+            error_msg = f'An error occurred in the test method: {error}'
+            print(error_msg)
+            logger.error(error_msg)
+            return None
+        except Exception as error:
+            error_msg = f'An error occurred in the test method: {error}'
+            print(error_msg)
+            logger.error(error_msg)
+            return None
 
     # def path_has_failure(self, path, failed_edges):
 
@@ -709,11 +803,11 @@ class GraphStructure:
         failed_path = [
             edge for edge in path_edges if is_edge_failed(edge)]
         if failed_path:
-            logging.error(
+            logger.error(
                 'This edge disjoint path contains edges that has been found in failed edges: %s', failed_path)
             return True
         else:
-            logging.info(
+            logger.info(
                 'This edge disjoint path does not suffer any failure.')
             return False
 
@@ -749,7 +843,7 @@ class GraphStructure:
 
             else:
                 logger.error(
-                    'Destination node "{self.destination}" can not be reached')
+                    f'Destination node "{self.destination}" can not be reached')
 
     def multiple_tree_routing(self, edge_disjoint_paths, destination_incidents, failed_edges, trees):
 
@@ -796,79 +890,79 @@ class GraphStructure:
         #     logger.info(
         #         f'Destination node "{self.destination}" can be reached through this path {path_to_d}')
 
-    def build(self, fraction, version=None):
+    # def build(self, fraction, version=None):
 
-        logger = self._get_logger('build.log')
+    #     logger = self._get_logger('build.log')
 
-        edge_disjoint_paths = self.compute_and_sort_edps()
-        logger.info(
-            f'EDPS between {self.source} and {self.destination} are :{edge_disjoint_paths}')
+    #     edge_disjoint_paths = self.compute_and_sort_edps()
+    #     logger.info(
+    #         f'EDPS between {self.source} and {self.destination} are :{edge_disjoint_paths}')
 
-        edge_attrs = nx.get_edge_attributes(self.graph, "attr")
-        logger.info(f'Attributes before extending EDP : {edge_attrs}')
+    #     edge_attrs = nx.get_edge_attributes(self.graph, "attr")
+    #     logger.info(f'Attributes before extending EDP : {edge_attrs}')
 
-        destination_incidents = self.find_destination_incidents()
-        logger.info(f'Destination neighbors are : {destination_incidents}')
+    #     destination_incidents = self.find_destination_incidents()
+    #     logger.info(f'Destination neighbors are : {destination_incidents}')
 
-        self.number_the_computed_edps(edge_disjoint_paths)
+    #     self.number_the_computed_edps(edge_disjoint_paths)
 
-        edge_attrs_after = nx.get_edge_attributes(self.graph, "attr")
-        logger.info(f'Attributes after numbering the EDPs : {edge_attrs}')
+    #     edge_attrs_after = nx.get_edge_attributes(self.graph, "attr")
+    #     logger.info(f'Attributes after numbering the EDPs : {edge_attrs}')
 
-        # failed_edges_random = self.generate_random_failed_edges(fraction)
-        failed_edges_random = [(2, 7)]
+    #     # failed_edges_random = self.generate_random_failed_edges(fraction)
+    #     failed_edges_random = [(2, 7)]
 
-        shortest_path_after_removing_failededges = self.compute_shortest_path(
-            failed_edges_random)
-        logger.info(
-            f'Shortest path after removing failed edges: {shortest_path_after_removing_failededges}')
+    #     shortest_path_after_removing_failededges = self.compute_shortest_path(
+    #         failed_edges_random)
+    #     logger.info(
+    #         f'Shortest path after removing failed edges: {shortest_path_after_removing_failededges}')
 
-        # One tree building
-        if version == "onetree":
+    #     # One tree building
+    #     if version == "onetree":
 
-            self.oneTree(edge_disjoint_paths, reverse=True)
-            logger.debug(f'One tree choosed')
+    #         self.oneTree(edge_disjoint_paths, reverse=True)
+    #         logger.debug(f'One tree choosed')
 
-            edps = list(nx.edge_disjoint_paths(
-                self.graph, self.source, self.destination))
-            logger.info(
-                f'Updated edps between {self.source} and {self.destination} are : {edps}')
+    #         edps = list(nx.edge_disjoint_paths(
+    #             self.graph, self.source, self.destination))
+    #         logger.info(
+    #             f'Updated edps between {self.source} and {self.destination} are : {edps}')
 
-            edge_attrs_after = nx.get_edge_attributes(self.graph, "attr")
-            logger.info(
-                f'Attributes after building one tree : {edge_attrs_after}')
+    #         edge_attrs_after = nx.get_edge_attributes(self.graph, "attr")
+    #         logger.info(
+    #             f'Attributes after building one tree : {edge_attrs_after}')
 
-            self.disconnect_the_edges_of_the_destination()
-            self.prune_akt(destination_incidents, 1)
-            self.remove_failed_edges(failed_edges_random)
-            self.remove_unconnected_nodes()
+    #         self.disconnect_the_edges_of_the_destination()
+    #         self.prune_akt(destination_incidents, 1)
+    #         self.remove_failed_edges(failed_edges_random)
+    #         self.remove_unconnected_nodes()
 
-            Tree = nx.Graph()
-            for first_node, second_node, data in self.graph.edges(data=True):
-                if data["attr"] == "1":
-                    Tree.add_edge(first_node, second_node)
+    #         Tree = nx.Graph()
+    #         for first_node, second_node, data in self.graph.edges(data=True):
+    #             if data["attr"] == "1":
+    #                 Tree.add_edge(first_node, second_node)
 
-            edge_attrs_pruned = nx.get_edge_attributes(self.graph, "attr")
-            logger.debug(
-                f'Attributes after pruning the tree : {edge_attrs_pruned}')
+    #         edge_attrs_pruned = nx.get_edge_attributes(self.graph, "attr")
+    #         logger.debug(
+    #             f'Attributes after pruning the tree : {edge_attrs_pruned}')
 
-            self.one_tree_routing(edps, Tree,
-                                  destination_incidents, failed_edges_random)
-            logger.info('Routing has just begun')
-            logger.debug(f'Tree with attr 1 is : {Tree.edges}')
+    #         self.one_tree_routing(edps, Tree,
+    #                               destination_incidents, failed_edges_random)
+    #         logger.info('Routing has just begun')
+    #         logger.debug(f'Tree with attr 1 is : {Tree.edges}')
 
-            # pos = nx.circular_layout(self.graph)
-            # nx.draw(self.graph, with_labels=True, pos=pos)
-            # plt.show()
-            # pos = nx.circular_layout(Tree)
-            # nx.draw(Tree, with_labels=True, pos=pos)
-            # plt.show()
+    #         # pos = nx.circular_layout(self.graph)
+    #         # nx.draw(self.graph, with_labels=True, pos=pos)
+    #         # plt.show()
+    #         # pos = nx.circular_layout(Tree)
+    #         # nx.draw(Tree, with_labels=True, pos=pos)
+    #         # plt.show()
 
-        else:
-            logger.debug(f'Multiple tree choosed')
-            for edge_disjoint_path in edge_disjoint_paths:
+    #     else:
+    #         logger.debug(f'Multiple tree choosed')
+    #         for edge_disjoint_path in edge_disjoint_paths:
 
-                tree_attr = self.tree_based_edge(edge_disjoint_paths,
-                                                 edge_disjoint_path)
-                self.disconnect_the_edges_of_the_destination()
-                self.prune_akt(destination_incidents, tree_attr)
+    #             tree_attr = self.tree_based_edge(edge_disjoint_paths,
+    #                                              edge_disjoint_path)
+    #             self.disconnect_the_edges_of_the_destination()
+    #             self.prune_akt(destination_incidents, tree_attr)

@@ -6,14 +6,20 @@ from Build import Build
 import random
 from collections import defaultdict
 
-generate_graph = Graph(8, 8, filename='graph88.pkl')
+generate_graph = Graph(11, 13, filename='graph1113.pkl')
+# generate_graph.save_to_file('graph1113.pkl')
+# generate_graph = Graph(12, 9, filename='graph1211.pkl')  # test2
+# generate_graph = Graph(17, 20, filename='graph1720.pkl')  # test3 gggg
+# generate_graph = Graph(8, 8, filename='graph88.pkl') #test1
 # generate_graph = Graph(8, 8, filename='graph1110.pkl')  # Important
-# generate_graph.save_to_file('graph88.pkl')
 
 g_copy = GraphStructure(generate_graph.get_graph(),
                         0, 5)
 
-g_copy.build(0.4, "onetree")
+# g_copy.build(0.4, "onetree")
+
+network = Build(g_copy)
+network.build(0.4, "onetree")
 
 
 graph = {

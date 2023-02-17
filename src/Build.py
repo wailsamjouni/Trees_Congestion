@@ -1,84 +1,97 @@
 from GraphStructure import GraphStructure
 import networkx as nx
+import logging
+import matplotlib.pyplot as plt
 
 
 class Build:
 
-    def __init__(self, graph_structure: GraphStructure):
-        self.graph_structure = graph_structure
+    def __init__(self, graph: GraphStructure):
+        self.graph = graph
 
-    def number(self):
-        return self.graph_structure.graph.number_of_nodes()
+    def build(self, fraction, version=None):
 
-    def build(self):
-        number_of_nodes = self.graph_structure.graph.number_of_nodes()
-        self.graph_structure.give_attrs_to_graph()
-        node_attr = nx.get_node_attributes(self.graph_structure.graph, "attr")
-        print(
-            f"The attributes of the nodes before computing the EDPs :{node_attr}")
-        print("------------------------------------------------------")
+        logger = self.graph._get_logger('build.log')
 
-        edge_disjoint_paths = self.graph_structure.compute_and_sort_edps()
-        print(
-            f"The EDPs between source and destination are : {edge_disjoint_paths}")
-        print("------------------------------------------------------")
+        edge_disjoint_paths = self.graph.compute_and_sort_edps()
+        logger.info(
+            f'EDPS between {self.graph.source} and {self.graph.destination} are :{edge_disjoint_paths}')
 
-        self.graph_structure.number_the_computed_edps(edge_disjoint_paths)
-        failed_edges = self.graph_structure.generate_random_failed_edges(0.3)
+        edge_attrs = nx.get_edge_attributes(self.graph.graph, "attr")
+        logger.info(f'Attributes before extending EDP : {edge_attrs}')
 
-        shortest_path_after_removing_failededges = self.graph_structure.compute_shortest_path(
-            failed_edges)
-        # self.graph_structure.set_failed_edges(failed_edges)
+        destination_incidents = self.graph.find_destination_incidents()
+        logger.info(f'Destination neighbors are : {destination_incidents}')
 
-        contains_all_edps_fails = self.graph_structure.failed_in_all_edps(
-            edge_disjoint_paths, failed_edges)
+        self.graph.number_the_computed_edps(edge_disjoint_paths)
 
-        if contains_all_edps_fails:
-            one_tree = self.graph_structure.oneTree(
-                edge_disjoint_paths, reverse=True)
+        edge_attrs_after = nx.get_edge_attributes(self.graph.graph, "attr")
+        logger.info(
+            f'Attributes after numbering the EDPs : {edge_attrs_after}')
+
+        # failed_edges_random = self.graph.generate_random_failed_edges(fraction)
+        failed_edges_random = [(5, 10), (0, 2), (1, 2), (1, 6)]
+        logger.warning(f'Failed edges are : {failed_edges_random}')
+
+        shortest_path_after_removing_failededges = self.graph.compute_shortest_path(
+            failed_edges_random)
+        logger.info(
+            f'Shortest path after removing failed edges: {shortest_path_after_removing_failededges}')
+
+        # One tree building
+        if version == "onetree":
+
+            number = self.graph.oneTree(edge_disjoint_paths, reverse=True)
+            logger.debug(f'One tree choosed')
+
+            edps = sorted(list(nx.edge_disjoint_paths(
+                self.graph.graph, self.graph.source, self.graph.destination)), key=len, reverse=False)
+            logger.debug(f'The sorted EDPs are : {edps}')
+
+            logger.info(
+                f'Updated edps between {self.graph.source} and {self.graph.destination} are : {edps}')
+
+            edge_attrs_after = nx.get_edge_attributes(self.graph.graph, "attr")
+            logger.info(
+                f'Attributes after building one tree : {edge_attrs_after}')
+
+            self.graph.disconnect_the_edges_of_the_destination()
+
+            self.graph.prune_akt(destination_incidents, number)
+            self.graph.remove_failed_edges(failed_edges_random)
+            # self.graph.remove_unconnected_nodes()
+
+            Tree = nx.Graph()
+            for first_node, second_node, data in self.graph.graph.edges(data=True):
+                if data["attr"] == str(number):
+                    Tree.add_edge(first_node, second_node)
+
+            edge_attrs_pruned = nx.get_edge_attributes(
+                self.graph.graph, "attr")
+            logger.debug(
+                f'Attributes after pruning the tree : {edge_attrs_pruned}')
+
+            logger.warning(f'Tree is : {Tree}')
+
+            self.graph.one_tree_routing(edps, Tree,
+                                        destination_incidents, failed_edges_random)
+            logger.info('Routing has just begun')
+            logger.debug(f'Tree with attr {len(edps)} is : {Tree.edges}')
+
+            pos = nx.circular_layout(Tree)
+            nx.draw(Tree, with_labels=True, pos=pos)
+            plt.show()
+
+            # pos = nx.circular_layout(self.graph.buildone())
+            # nx.draw(self.graph.buildone(), with_labels=True, pos=pos)
+            # plt.show()
+
         else:
-            self.graph_structure.multipleTree(edge_disjoint_paths)
+            logger.debug(f'Multiple tree choosed')
+            for edge_disjoint_path in edge_disjoint_paths:
 
-        destination_incidents = self.graph_structure.find_destination_incidents()
-        print(
-            f"The incidents of the destination are : {destination_incidents}")
-        print("------------------------------------------------------")
+                tree_attr = self.graph.tree_based_edge(edge_disjoint_paths,
+                                                       edge_disjoint_path)
+                self.graph.disconnect_the_edges_of_the_destination()
 
-        node_attr_after = nx.get_node_attributes(
-            self.graph_structure.graph, "attr")
-        print(
-            f"The attributes of the nodes before computing the EDPs :{node_attr_after}")
-        print("------------------------------------------------------")
-
-        self.graph_structure.disconnect_the_edges_of_the_destination()
-
-        print(
-            f"The edges with attribut -1  are : {self.graph_structure.edges_attrs_of_destination()}")
-
-        pruned_graph = self.graph_structure.prune_branches_from_tree(
-            "2", destination_incidents)
-
-        path = self.graph_structure.compute_shortest_path(failed_edges)
-
-        self.graph_structure.remove_failed_edges(failed_edges)
-        number_of_nodes_after = self.graph_structure.graph.number_of_nodes()
-
-        self.graph_structure.edps_in_ascending_order(edge_disjoint_paths)
-
-        # isReachable = self.graph_structure.is_source_still_reachable()
-
-        # if isReachable:
-        #     print(shortest_path_after_removing_failededges, "still a path from", self.graph_structure.source, "to",
-        #           self.graph_structure.destination, "in the modified graph")
-
-        #     # calculate Edps again
-        #     edps_after_cut_edges = list(nx.edge_disjoint_paths(
-        #         self.graph_structure.graph, self.graph_structure.source, self.graph_structure.destination))
-        #     common_edge_disjoint_paths = set(
-        #         edge_disjoint_paths).intersection(edps_after_cut_edges)
-        #     if len(common_edge_disjoint_paths) != 0:
-        #         print(
-        #             f"We still can reach the destination from the source using those originl edge disjoint paths : {common_edge_disjoint_paths}")
-
-        # else:
-        #     print("The destination cannot be reached anymore")
+                self.graph.prune_akt(destination_incidents, tree_attr)

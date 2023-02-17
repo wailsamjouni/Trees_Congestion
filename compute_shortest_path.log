@@ -1,3 +1,13 @@
-2023-02-15 13:43:36,407 DEBUG: A copy of the original graph has been created
-2023-02-15 13:43:36,407 DEBUG: The edges [(2, 7)] have been removed from the copied graph
-2023-02-15 13:43:36,407 DEBUG: The shortest path from 0 to 5 is 4
+2023-02-17 15:21:59,117 DEBUG: A copy of the original graph has been created
+2023-02-17 15:21:59,118 DEBUG: The edges [(5, 10), (0, 2), (1, 2), (1, 6)] have been removed from the copied graph
+2023-02-17 15:21:59,118 ERROR: No path from 0 to 5
+Traceback (most recent call last):
+  File "c:\Users\waill\Desktop\BA\Trees_Congestion\src\GraphStructure.py", line 145, in compute_shortest_path
+    shortest_path = nx.shortest_path_length(
+  File "C:\Users\waill\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\networkx\algorithms\shortest_paths\generic.py", line 307, in shortest_path_length
+    p = nx.bidirectional_shortest_path(G, source, target)
+  File "C:\Users\waill\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\networkx\algorithms\shortest_paths\unweighted.py", line 224, in bidirectional_shortest_path
+    results = _bidirectional_pred_succ(G, source, target)
+  File "C:\Users\waill\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\networkx\algorithms\shortest_paths\unweighted.py", line 292, in _bidirectional_pred_succ
+    raise nx.NetworkXNoPath(f"No path between {source} and {target}.")
+networkx.exception.NetworkXNoPath: No path between 0 and 5.

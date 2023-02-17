@@ -1,2 +1,2 @@
-2023-02-15 13:43:36,416 INFO: Edge disjoint path: [0, 7, 2, 5] will be checked
-2023-02-15 13:43:36,419 INFO: Destination node "5" can be reached through this path [0, 7, 3, 2] using depth first search
+2023-02-17 15:21:59,173 INFO: Edge disjoint path: [0, 2, 10, 5] will be checked
+2023-02-17 15:21:59,177 ERROR: Destination node "5" can not be reached

@@ -1,106 +1,201 @@
-2023-02-15 13:43:36,410 DEBUG: Tree gebildet: [(0, 4), (0, 7), (7, 2), (7, 3), (1, 3), (3, 2), (3, 6)]
-2023-02-15 13:43:36,410 DEBUG: Source is in graph: 0
-2023-02-15 13:43:36,410 INFO: Depth first search computed: [(0, 0, 'forward'), (0, 4, 'forward'), (4, 0, 'nontree'), (0, 4, 'reverse'), (0, 7, 'forward'), (7, 0, 'nontree'), (7, 2, 'forward'), (2, 7, 'nontree'), (2, 3, 'forward'), (3, 1, 'forward'), (1, 3, 'nontree'), (3, 1, 'reverse'), (3, 2, 'nontree'), (3, 7, 'nontree'), (3, 6, 'forward'), (6, 3, 'nontree'), (3, 6, 'reverse'), (2, 3, 'reverse'), (7, 2, 'reverse'), (7, 3, 'nontree'), (0, 7, 'reverse'), (0, 0, 'reverse')]
-2023-02-15 13:43:36,411 DEBUG: Nontree edges removed: [(0, 0, 'forward'), (0, 4, 'forward'), (0, 4, 'reverse'), (0, 7, 'forward'), (7, 2, 'forward'), (2, 3, 'forward'), (3, 1, 'forward'), (3, 1, 'reverse'), (3, 6, 'forward'), (3, 6, 'reverse'), (2, 3, 'reverse'), (7, 2, 'reverse'), (0, 7, 'reverse'), (0, 0, 'reverse')]
-2023-02-15 13:43:36,411 INFO: Das Element (0,0,forward) wird bearbeitet
-2023-02-15 13:43:36,411 DEBUG: Node "0" has been visisted
-2023-02-15 13:43:36,411 DEBUG: List of nodes visited: {0}
-2023-02-15 13:43:36,411 DEBUG: Node "0" is forward or in branches_to_keep
-2023-02-15 13:43:36,411 WARNING: List of branches_to_keep: set()
-2023-02-15 13:43:36,411 DEBUG: Element (0,0,forward) wird mit Element (0,4,forward) verglichen
-2023-02-15 13:43:36,411 DEBUG: "0" is in destination_incident or degree > 1
-2023-02-15 13:43:36,411 DEBUG: The list of branches to keep is updated: {0}
-2023-02-15 13:43:36,411 INFO: Das Element (0,4,forward) wird bearbeitet
-2023-02-15 13:43:36,411 DEBUG: Node "4" has been visisted
-2023-02-15 13:43:36,411 DEBUG: List of nodes visited: {0, 4}
-2023-02-15 13:43:36,411 DEBUG: Node "4" is forward or in branches_to_keep
-2023-02-15 13:43:36,411 WARNING: List of branches_to_keep: {0}
-2023-02-15 13:43:36,411 DEBUG: Element (0,4,forward) wird mit Element (0,4,reverse) verglichen
-2023-02-15 13:43:36,411 DEBUG: The current element and the next is "forward" and "reverse" respectively": (forward, reverse)
-2023-02-15 13:43:36,411 INFO: Das Element (0,4,reverse) wird bearbeitet
-2023-02-15 13:43:36,411 DEBUG: Node "4" has been removed from visited list
-2023-02-15 13:43:36,411 DEBUG: List of nodes visited: {0}
-2023-02-15 13:43:36,411 WARNING: List of branches_to_keep: {0}
-2023-02-15 13:43:36,411 DEBUG: Edge (0, 4) has attribut "0"
-2023-02-15 13:43:36,411 DEBUG: Element (0,4,reverse) wird mit Element (0,7,forward) verglichen
-2023-02-15 13:43:36,411 INFO: Das Element (0,7,forward) wird bearbeitet
-2023-02-15 13:43:36,411 DEBUG: Node "7" has been visisted
-2023-02-15 13:43:36,411 DEBUG: List of nodes visited: {0, 7}
-2023-02-15 13:43:36,411 DEBUG: Node "7" is forward or in branches_to_keep
-2023-02-15 13:43:36,411 WARNING: List of branches_to_keep: {0}
-2023-02-15 13:43:36,411 DEBUG: Element (0,7,forward) wird mit Element (7,2,forward) verglichen
-2023-02-15 13:43:36,411 DEBUG: "7" is in destination_incident or degree > 1
-2023-02-15 13:43:36,411 DEBUG: The list of branches to keep is updated: {0, 7}
-2023-02-15 13:43:36,411 INFO: Das Element (7,2,forward) wird bearbeitet
-2023-02-15 13:43:36,411 DEBUG: Node "2" has been visisted
-2023-02-15 13:43:36,411 DEBUG: List of nodes visited: {0, 2, 7}
-2023-02-15 13:43:36,411 DEBUG: Node "2" is forward or in branches_to_keep
-2023-02-15 13:43:36,411 WARNING: List of branches_to_keep: {0, 7}
-2023-02-15 13:43:36,411 DEBUG: Element (7,2,forward) wird mit Element (2,3,forward) verglichen
-2023-02-15 13:43:36,412 DEBUG: "2" is in destination_incident or degree > 1
-2023-02-15 13:43:36,412 DEBUG: The list of branches to keep is updated: {0, 2, 7}
-2023-02-15 13:43:36,412 INFO: Das Element (2,3,forward) wird bearbeitet
-2023-02-15 13:43:36,412 DEBUG: Node "3" has been visisted
-2023-02-15 13:43:36,412 DEBUG: List of nodes visited: {0, 2, 3, 7}
-2023-02-15 13:43:36,412 DEBUG: Node "3" is forward or in branches_to_keep
-2023-02-15 13:43:36,412 WARNING: List of branches_to_keep: {0, 2, 7}
-2023-02-15 13:43:36,412 DEBUG: Element (2,3,forward) wird mit Element (3,1,forward) verglichen
-2023-02-15 13:43:36,412 DEBUG: "3" is in destination_incident or degree > 1
-2023-02-15 13:43:36,412 DEBUG: The list of branches to keep is updated: {0, 2, 3, 7}
-2023-02-15 13:43:36,412 INFO: Das Element (3,1,forward) wird bearbeitet
-2023-02-15 13:43:36,412 DEBUG: Node "1" has been visisted
-2023-02-15 13:43:36,412 DEBUG: List of nodes visited: {0, 1, 2, 3, 7}
-2023-02-15 13:43:36,412 DEBUG: Node "1" is forward or in branches_to_keep
-2023-02-15 13:43:36,412 WARNING: List of branches_to_keep: {0, 2, 3, 7}
-2023-02-15 13:43:36,412 DEBUG: Element (3,1,forward) wird mit Element (3,1,reverse) verglichen
-2023-02-15 13:43:36,412 DEBUG: The current element and the next is "forward" and "reverse" respectively": (forward, reverse)
-2023-02-15 13:43:36,412 INFO: Das Element (3,1,reverse) wird bearbeitet
-2023-02-15 13:43:36,412 DEBUG: Node "1" has been removed from visited list
-2023-02-15 13:43:36,412 DEBUG: List of nodes visited: {0, 2, 3, 7}
-2023-02-15 13:43:36,412 WARNING: List of branches_to_keep: {0, 2, 3, 7}
-2023-02-15 13:43:36,412 DEBUG: Edge (3, 1) has attribut "0"
-2023-02-15 13:43:36,412 DEBUG: Element (3,1,reverse) wird mit Element (3,6,forward) verglichen
-2023-02-15 13:43:36,412 INFO: Das Element (3,6,forward) wird bearbeitet
-2023-02-15 13:43:36,412 DEBUG: Node "6" has been visisted
-2023-02-15 13:43:36,412 DEBUG: List of nodes visited: {0, 2, 3, 6, 7}
-2023-02-15 13:43:36,412 DEBUG: Node "6" is forward or in branches_to_keep
-2023-02-15 13:43:36,412 WARNING: List of branches_to_keep: {0, 2, 3, 7}
-2023-02-15 13:43:36,412 DEBUG: Element (3,6,forward) wird mit Element (3,6,reverse) verglichen
-2023-02-15 13:43:36,412 DEBUG: The current element and the next is "forward" and "reverse" respectively": (forward, reverse)
-2023-02-15 13:43:36,412 INFO: Das Element (3,6,reverse) wird bearbeitet
-2023-02-15 13:43:36,412 DEBUG: Node "6" has been removed from visited list
-2023-02-15 13:43:36,412 DEBUG: List of nodes visited: {0, 2, 3, 7}
-2023-02-15 13:43:36,412 WARNING: List of branches_to_keep: {0, 2, 3, 7}
-2023-02-15 13:43:36,412 DEBUG: Edge (3, 6) has attribut "0"
-2023-02-15 13:43:36,412 DEBUG: Element (3,6,reverse) wird mit Element (2,3,reverse) verglichen
-2023-02-15 13:43:36,412 INFO: Das Element (2,3,reverse) wird bearbeitet
-2023-02-15 13:43:36,412 DEBUG: Node "3" has been removed from visited list
-2023-02-15 13:43:36,413 DEBUG: List of nodes visited: {0, 2, 7}
-2023-02-15 13:43:36,413 DEBUG: Node "3" is forward or in branches_to_keep
-2023-02-15 13:43:36,413 WARNING: List of branches_to_keep: {0, 2, 3, 7}
-2023-02-15 13:43:36,413 DEBUG: Element (2,3,reverse) wird mit Element (7,2,reverse) verglichen
-2023-02-15 13:43:36,413 DEBUG: "3" is in destination_incident or degree > 1
-2023-02-15 13:43:36,413 DEBUG: The list of branches to keep is updated: {0, 2, 3, 7}
-2023-02-15 13:43:36,413 INFO: Das Element (7,2,reverse) wird bearbeitet
-2023-02-15 13:43:36,413 DEBUG: Node "2" has been removed from visited list
-2023-02-15 13:43:36,413 DEBUG: List of nodes visited: {0, 7}
-2023-02-15 13:43:36,413 DEBUG: Node "2" is forward or in branches_to_keep
-2023-02-15 13:43:36,413 WARNING: List of branches_to_keep: {0, 2, 3, 7}
-2023-02-15 13:43:36,413 DEBUG: Element (7,2,reverse) wird mit Element (0,7,reverse) verglichen
-2023-02-15 13:43:36,413 DEBUG: "2" is in destination_incident or degree > 1
-2023-02-15 13:43:36,413 DEBUG: The list of branches to keep is updated: {0, 2, 3, 7}
-2023-02-15 13:43:36,413 INFO: Das Element (0,7,reverse) wird bearbeitet
-2023-02-15 13:43:36,413 DEBUG: Node "7" has been removed from visited list
-2023-02-15 13:43:36,413 DEBUG: List of nodes visited: {0}
-2023-02-15 13:43:36,413 DEBUG: Node "7" is forward or in branches_to_keep
-2023-02-15 13:43:36,413 WARNING: List of branches_to_keep: {0, 2, 3, 7}
-2023-02-15 13:43:36,413 DEBUG: Element (0,7,reverse) wird mit Element (0,0,reverse) verglichen
-2023-02-15 13:43:36,413 DEBUG: "7" is in destination_incident or degree > 1
-2023-02-15 13:43:36,413 DEBUG: The list of branches to keep is updated: {0, 2, 3, 7}
-2023-02-15 13:43:36,413 INFO: Das Element (0,0,reverse) wird bearbeitet
-2023-02-15 13:43:36,413 DEBUG: Node "0" has been removed from visited list
-2023-02-15 13:43:36,413 DEBUG: List of nodes visited: set()
-2023-02-15 13:43:36,413 DEBUG: Node "0" is forward or in branches_to_keep
-2023-02-15 13:43:36,413 WARNING: List of branches_to_keep: {0, 2, 3, 7}
-2023-02-15 13:43:36,414 DEBUG: Tree built to check if still exists another nodes and edges to prune: [(0, 7), (7, 2), (7, 3), (2, 3)]
-2023-02-15 13:43:36,414 DEBUG: Leaf nodes: []
+2023-02-17 15:21:59,132 DEBUG: Tree gebildet: [(0, 2), (0, 4), (2, 1), (2, 10), (2, 7), (2, 8), (1, 3), (1, 6), (6, 8), (8, 9)]
+2023-02-17 15:21:59,133 DEBUG: Source is in graph: 0
+2023-02-17 15:21:59,133 INFO: Depth first search computed: [(0, 0, 'forward'), (0, 2, 'forward'), (2, 0, 'nontree'), (2, 1, 'forward'), (1, 2, 'nontree'), (1, 3, 'forward'), (3, 1, 'nontree'), (1, 3, 'reverse'), (1, 6, 'forward'), (6, 1, 'nontree'), (6, 8, 'forward'), (8, 2, 'nontree'), (8, 6, 'nontree'), (8, 9, 'forward'), (9, 8, 'nontree'), (8, 9, 'reverse'), (6, 8, 'reverse'), (1, 6, 'reverse'), (2, 1, 'reverse'), (2, 10, 'forward'), (10, 2, 'nontree'), (2, 10, 'reverse'), (2, 7, 'forward'), (7, 2, 'nontree'), (2, 7, 'reverse'), (2, 8, 'nontree'), (0, 2, 'reverse'), (0, 4, 'forward'), (4, 0, 'nontree'), (0, 4, 'reverse'), (0, 0, 'reverse')]
+2023-02-17 15:21:59,133 DEBUG: Nontree edges removed: [(0, 0, 'forward'), (0, 2, 'forward'), (2, 1, 'forward'), (1, 3, 'forward'), (1, 3, 'reverse'), (1, 6, 'forward'), (6, 8, 'forward'), (8, 9, 'forward'), (8, 9, 'reverse'), (6, 8, 'reverse'), (1, 6, 'reverse'), (2, 1, 'reverse'), (2, 10, 'forward'), (2, 10, 'reverse'), (2, 7, 'forward'), (2, 7, 'reverse'), (0, 2, 'reverse'), (0, 4, 'forward'), (0, 4, 'reverse'), (0, 0, 'reverse')]
+2023-02-17 15:21:59,133 INFO: Das Element (0,0,forward) wird bearbeitet
+2023-02-17 15:21:59,133 DEBUG: Node "0" has been visisted
+2023-02-17 15:21:59,134 DEBUG: List of nodes visited: {0}
+2023-02-17 15:21:59,134 DEBUG: Node "0" is forward or in branches_to_keep
+2023-02-17 15:21:59,134 WARNING: List of branches_to_keep: set()
+2023-02-17 15:21:59,134 DEBUG: Element (0,0,forward) wird mit Element (0,2,forward) verglichen
+2023-02-17 15:21:59,134 INFO: Das Element (0,2,forward) wird bearbeitet
+2023-02-17 15:21:59,134 DEBUG: Node "2" has been visisted
+2023-02-17 15:21:59,134 DEBUG: List of nodes visited: {0, 2}
+2023-02-17 15:21:59,134 DEBUG: Node "2" is forward or in branches_to_keep
+2023-02-17 15:21:59,135 WARNING: List of branches_to_keep: set()
+2023-02-17 15:21:59,135 DEBUG: Element (0,2,forward) wird mit Element (2,1,forward) verglichen
+2023-02-17 15:21:59,135 INFO: Das Element (2,1,forward) wird bearbeitet
+2023-02-17 15:21:59,135 DEBUG: Node "1" has been visisted
+2023-02-17 15:21:59,135 DEBUG: List of nodes visited: {0, 1, 2}
+2023-02-17 15:21:59,135 DEBUG: Node "1" is forward or in branches_to_keep
+2023-02-17 15:21:59,135 WARNING: List of branches_to_keep: set()
+2023-02-17 15:21:59,136 DEBUG: Element (2,1,forward) wird mit Element (1,3,forward) verglichen
+2023-02-17 15:21:59,136 INFO: Das Element (1,3,forward) wird bearbeitet
+2023-02-17 15:21:59,136 DEBUG: Node "3" has been visisted
+2023-02-17 15:21:59,136 DEBUG: List of nodes visited: {0, 1, 2, 3}
+2023-02-17 15:21:59,136 DEBUG: Node "3" is forward or in branches_to_keep
+2023-02-17 15:21:59,136 WARNING: List of branches_to_keep: set()
+2023-02-17 15:21:59,137 DEBUG: Element (1,3,forward) wird mit Element (1,3,reverse) verglichen
+2023-02-17 15:21:59,137 DEBUG: The current element and the next is "forward" and "reverse" respectively": (forward, reverse)
+2023-02-17 15:21:59,137 INFO: Das Element (1,3,reverse) wird bearbeitet
+2023-02-17 15:21:59,137 DEBUG: Node "3" has been removed from visited list
+2023-02-17 15:21:59,137 DEBUG: List of nodes visited: {0, 1, 2}
+2023-02-17 15:21:59,137 WARNING: List of branches_to_keep: set()
+2023-02-17 15:21:59,138 DEBUG: Node "3" has attribut "0"
+2023-02-17 15:21:59,138 DEBUG: Edge (1, 3) has attribut "0"
+2023-02-17 15:21:59,138 DEBUG: Element (1,3,reverse) wird mit Element (1,6,forward) verglichen
+2023-02-17 15:21:59,138 INFO: Das Element (1,6,forward) wird bearbeitet
+2023-02-17 15:21:59,138 DEBUG: Node "6" has been visisted
+2023-02-17 15:21:59,139 DEBUG: List of nodes visited: {0, 1, 2, 6}
+2023-02-17 15:21:59,139 DEBUG: Node "6" is forward or in branches_to_keep
+2023-02-17 15:21:59,139 WARNING: List of branches_to_keep: set()
+2023-02-17 15:21:59,139 DEBUG: Element (1,6,forward) wird mit Element (6,8,forward) verglichen
+2023-02-17 15:21:59,139 INFO: Das Element (6,8,forward) wird bearbeitet
+2023-02-17 15:21:59,139 DEBUG: Node "8" has been visisted
+2023-02-17 15:21:59,140 DEBUG: List of nodes visited: {0, 1, 2, 6, 8}
+2023-02-17 15:21:59,140 DEBUG: Node "8" is forward or in branches_to_keep
+2023-02-17 15:21:59,140 WARNING: List of branches_to_keep: set()
+2023-02-17 15:21:59,140 DEBUG: Element (6,8,forward) wird mit Element (8,9,forward) verglichen
+2023-02-17 15:21:59,140 INFO: Das Element (8,9,forward) wird bearbeitet
+2023-02-17 15:21:59,140 DEBUG: Node "9" has been visisted
+2023-02-17 15:21:59,140 DEBUG: List of nodes visited: {0, 1, 2, 6, 8, 9}
+2023-02-17 15:21:59,140 DEBUG: Node "9" is forward or in branches_to_keep
+2023-02-17 15:21:59,140 WARNING: List of branches_to_keep: set()
+2023-02-17 15:21:59,141 DEBUG: Element (8,9,forward) wird mit Element (8,9,reverse) verglichen
+2023-02-17 15:21:59,141 DEBUG: The current element and the next is "forward" and "reverse" respectively": (forward, reverse)
+2023-02-17 15:21:59,141 INFO: Das Element (8,9,reverse) wird bearbeitet
+2023-02-17 15:21:59,141 DEBUG: Node "9" has been removed from visited list
+2023-02-17 15:21:59,141 DEBUG: List of nodes visited: {0, 1, 2, 6, 8}
+2023-02-17 15:21:59,141 WARNING: List of branches_to_keep: set()
+2023-02-17 15:21:59,141 DEBUG: Node "9" has attribut "0"
+2023-02-17 15:21:59,141 DEBUG: Edge (8, 9) has attribut "0"
+2023-02-17 15:21:59,141 DEBUG: Element (8,9,reverse) wird mit Element (6,8,reverse) verglichen
+2023-02-17 15:21:59,142 INFO: Das Element (6,8,reverse) wird bearbeitet
+2023-02-17 15:21:59,142 DEBUG: Node "8" has been removed from visited list
+2023-02-17 15:21:59,142 DEBUG: List of nodes visited: {0, 1, 2, 6}
+2023-02-17 15:21:59,142 WARNING: List of branches_to_keep: set()
+2023-02-17 15:21:59,142 DEBUG: Node "8" has attribut "0"
+2023-02-17 15:21:59,142 DEBUG: Edge (6, 8) has attribut "0"
+2023-02-17 15:21:59,142 DEBUG: Element (6,8,reverse) wird mit Element (1,6,reverse) verglichen
+2023-02-17 15:21:59,142 INFO: Das Element (1,6,reverse) wird bearbeitet
+2023-02-17 15:21:59,142 DEBUG: Node "6" has been removed from visited list
+2023-02-17 15:21:59,143 DEBUG: List of nodes visited: {0, 1, 2}
+2023-02-17 15:21:59,143 WARNING: List of branches_to_keep: set()
+2023-02-17 15:21:59,143 DEBUG: Node "6" has attribut "0"
+2023-02-17 15:21:59,143 DEBUG: Edge (1, 6) has attribut "0"
+2023-02-17 15:21:59,143 DEBUG: Element (1,6,reverse) wird mit Element (2,1,reverse) verglichen
+2023-02-17 15:21:59,144 INFO: Das Element (2,1,reverse) wird bearbeitet
+2023-02-17 15:21:59,144 DEBUG: Node "1" has been removed from visited list
+2023-02-17 15:21:59,144 DEBUG: List of nodes visited: {0, 2}
+2023-02-17 15:21:59,144 WARNING: List of branches_to_keep: set()
+2023-02-17 15:21:59,144 DEBUG: Node "1" has attribut "0"
+2023-02-17 15:21:59,145 DEBUG: Edge (2, 1) has attribut "0"
+2023-02-17 15:21:59,145 DEBUG: Element (2,1,reverse) wird mit Element (2,10,forward) verglichen
+2023-02-17 15:21:59,145 INFO: Das Element (2,10,forward) wird bearbeitet
+2023-02-17 15:21:59,145 DEBUG: Node "10" has been visisted
+2023-02-17 15:21:59,145 DEBUG: List of nodes visited: {0, 2, 10}
+2023-02-17 15:21:59,145 DEBUG: Node "10" is forward or in branches_to_keep
+2023-02-17 15:21:59,145 WARNING: List of branches_to_keep: set()
+2023-02-17 15:21:59,146 DEBUG: Element (2,10,forward) wird mit Element (2,10,reverse) verglichen
+2023-02-17 15:21:59,146 DEBUG: "10" is neighbored with destination "5"
+2023-02-17 15:21:59,146 DEBUG: The list of branches to keep is updated: {0, 2, 10}
+2023-02-17 15:21:59,146 INFO: Das Element (2,10,reverse) wird bearbeitet
+2023-02-17 15:21:59,147 DEBUG: Node "10" has been removed from visited list
+2023-02-17 15:21:59,147 DEBUG: List of nodes visited: {0, 2}
+2023-02-17 15:21:59,147 DEBUG: Node "10" is forward or in branches_to_keep
+2023-02-17 15:21:59,148 WARNING: List of branches_to_keep: {0, 2, 10}
+2023-02-17 15:21:59,148 DEBUG: Element (2,10,reverse) wird mit Element (2,7,forward) verglichen
+2023-02-17 15:21:59,148 DEBUG: "10" is neighbored with destination "5"
+2023-02-17 15:21:59,148 DEBUG: The list of branches to keep is updated: {0, 2, 10}
+2023-02-17 15:21:59,149 INFO: Das Element (2,7,forward) wird bearbeitet
+2023-02-17 15:21:59,149 DEBUG: Node "7" has been visisted
+2023-02-17 15:21:59,149 DEBUG: List of nodes visited: {0, 2, 7}
+2023-02-17 15:21:59,149 DEBUG: Node "7" is forward or in branches_to_keep
+2023-02-17 15:21:59,149 WARNING: List of branches_to_keep: {0, 2, 10}
+2023-02-17 15:21:59,150 DEBUG: Element (2,7,forward) wird mit Element (2,7,reverse) verglichen
+2023-02-17 15:21:59,150 DEBUG: The current element and the next is "forward" and "reverse" respectively": (forward, reverse)
+2023-02-17 15:21:59,150 INFO: Das Element (2,7,reverse) wird bearbeitet
+2023-02-17 15:21:59,151 DEBUG: Node "7" has been removed from visited list
+2023-02-17 15:21:59,151 DEBUG: List of nodes visited: {0, 2}
+2023-02-17 15:21:59,151 WARNING: List of branches_to_keep: {0, 2, 10}
+2023-02-17 15:21:59,151 DEBUG: Node "7" has attribut "0"
+2023-02-17 15:21:59,151 DEBUG: Edge (2, 7) has attribut "0"
+2023-02-17 15:21:59,152 DEBUG: Element (2,7,reverse) wird mit Element (0,2,reverse) verglichen
+2023-02-17 15:21:59,152 INFO: Das Element (0,2,reverse) wird bearbeitet
+2023-02-17 15:21:59,152 DEBUG: Node "2" has been removed from visited list
+2023-02-17 15:21:59,152 DEBUG: List of nodes visited: {0}
+2023-02-17 15:21:59,152 DEBUG: Node "2" is forward or in branches_to_keep
+2023-02-17 15:21:59,152 WARNING: List of branches_to_keep: {0, 2, 10}
+2023-02-17 15:21:59,153 DEBUG: Element (0,2,reverse) wird mit Element (0,4,forward) verglichen
+2023-02-17 15:21:59,153 INFO: Das Element (0,4,forward) wird bearbeitet
+2023-02-17 15:21:59,153 DEBUG: Node "4" has been visisted
+2023-02-17 15:21:59,153 DEBUG: List of nodes visited: {0, 4}
+2023-02-17 15:21:59,154 DEBUG: Node "4" is forward or in branches_to_keep
+2023-02-17 15:21:59,154 WARNING: List of branches_to_keep: {0, 2, 10}
+2023-02-17 15:21:59,154 DEBUG: Element (0,4,forward) wird mit Element (0,4,reverse) verglichen
+2023-02-17 15:21:59,154 DEBUG: The current element and the next is "forward" and "reverse" respectively": (forward, reverse)
+2023-02-17 15:21:59,155 INFO: Das Element (0,4,reverse) wird bearbeitet
+2023-02-17 15:21:59,155 DEBUG: Node "4" has been removed from visited list
+2023-02-17 15:21:59,155 DEBUG: List of nodes visited: {0}
+2023-02-17 15:21:59,155 WARNING: List of branches_to_keep: {0, 2, 10}
+2023-02-17 15:21:59,156 DEBUG: Node "4" has attribut "0"
+2023-02-17 15:21:59,156 DEBUG: Edge (0, 4) has attribut "0"
+2023-02-17 15:21:59,156 DEBUG: Element (0,4,reverse) wird mit Element (0,0,reverse) verglichen
+2023-02-17 15:21:59,156 INFO: Das Element (0,0,reverse) wird bearbeitet
+2023-02-17 15:21:59,156 DEBUG: Node "0" has been removed from visited list
+2023-02-17 15:21:59,156 DEBUG: List of nodes visited: set()
+2023-02-17 15:21:59,157 DEBUG: Node "0" is forward or in branches_to_keep
+2023-02-17 15:21:59,157 WARNING: List of branches_to_keep: {0, 2, 10}
+2023-02-17 15:21:59,158 DEBUG: Tree built to check if still exists another nodes and edges to prune: [(0, 2), (2, 10), (2, 8)]
+2023-02-17 15:21:59,159 DEBUG: Leaf nodes: [8]
+2023-02-17 15:21:59,159 DEBUG: Tree gebildet: [(0, 2), (2, 10), (2, 8)]
+2023-02-17 15:21:59,159 DEBUG: Tree gebildet: [(0, 2), (2, 10), (2, 8)]
+2023-02-17 15:21:59,159 DEBUG: Source is in graph: 0
+2023-02-17 15:21:59,160 INFO: Depth first search computed: [(0, 0, 'forward'), (0, 2, 'forward'), (2, 0, 'nontree'), (2, 10, 'forward'), (10, 2, 'nontree'), (2, 10, 'reverse'), (2, 8, 'forward'), (8, 2, 'nontree'), (2, 8, 'reverse'), (0, 2, 'reverse'), (0, 0, 'reverse')]
+2023-02-17 15:21:59,160 DEBUG: Nontree edges removed: [(0, 0, 'forward'), (0, 2, 'forward'), (2, 10, 'forward'), (2, 10, 'reverse'), (2, 8, 'forward'), (2, 8, 'reverse'), (0, 2, 'reverse'), (0, 0, 'reverse')]
+2023-02-17 15:21:59,161 INFO: Das Element (0,0,forward) wird bearbeitet
+2023-02-17 15:21:59,161 DEBUG: Node "0" has been visisted
+2023-02-17 15:21:59,161 DEBUG: List of nodes visited: {0}
+2023-02-17 15:21:59,161 DEBUG: Node "0" is forward or in branches_to_keep
+2023-02-17 15:21:59,161 WARNING: List of branches_to_keep: set()
+2023-02-17 15:21:59,162 DEBUG: Element (0,0,forward) wird mit Element (0,2,forward) verglichen
+2023-02-17 15:21:59,162 INFO: Das Element (0,2,forward) wird bearbeitet
+2023-02-17 15:21:59,162 DEBUG: Node "2" has been visisted
+2023-02-17 15:21:59,162 DEBUG: List of nodes visited: {0, 2}
+2023-02-17 15:21:59,162 DEBUG: Node "2" is forward or in branches_to_keep
+2023-02-17 15:21:59,163 WARNING: List of branches_to_keep: set()
+2023-02-17 15:21:59,163 DEBUG: Element (0,2,forward) wird mit Element (2,10,forward) verglichen
+2023-02-17 15:21:59,163 INFO: Das Element (2,10,forward) wird bearbeitet
+2023-02-17 15:21:59,163 DEBUG: Node "10" has been visisted
+2023-02-17 15:21:59,163 DEBUG: List of nodes visited: {0, 2, 10}
+2023-02-17 15:21:59,163 DEBUG: Node "10" is forward or in branches_to_keep
+2023-02-17 15:21:59,164 WARNING: List of branches_to_keep: set()
+2023-02-17 15:21:59,164 DEBUG: Element (2,10,forward) wird mit Element (2,10,reverse) verglichen
+2023-02-17 15:21:59,164 DEBUG: "10" is neighbored with destination "5"
+2023-02-17 15:21:59,164 DEBUG: The list of branches to keep is updated: {0, 2, 10}
+2023-02-17 15:21:59,164 INFO: Das Element (2,10,reverse) wird bearbeitet
+2023-02-17 15:21:59,165 DEBUG: Node "10" has been removed from visited list
+2023-02-17 15:21:59,165 DEBUG: List of nodes visited: {0, 2}
+2023-02-17 15:21:59,165 DEBUG: Node "10" is forward or in branches_to_keep
+2023-02-17 15:21:59,165 WARNING: List of branches_to_keep: {0, 2, 10}
+2023-02-17 15:21:59,165 DEBUG: Element (2,10,reverse) wird mit Element (2,8,forward) verglichen
+2023-02-17 15:21:59,166 DEBUG: "10" is neighbored with destination "5"
+2023-02-17 15:21:59,166 DEBUG: The list of branches to keep is updated: {0, 2, 10}
+2023-02-17 15:21:59,166 INFO: Das Element (2,8,forward) wird bearbeitet
+2023-02-17 15:21:59,166 DEBUG: Node "8" has been visisted
+2023-02-17 15:21:59,166 DEBUG: List of nodes visited: {0, 8, 2}
+2023-02-17 15:21:59,166 DEBUG: Node "8" is forward or in branches_to_keep
+2023-02-17 15:21:59,166 WARNING: List of branches_to_keep: {0, 2, 10}
+2023-02-17 15:21:59,166 DEBUG: Element (2,8,forward) wird mit Element (2,8,reverse) verglichen
+2023-02-17 15:21:59,167 DEBUG: The current element and the next is "forward" and "reverse" respectively": (forward, reverse)
+2023-02-17 15:21:59,167 INFO: Das Element (2,8,reverse) wird bearbeitet
+2023-02-17 15:21:59,167 DEBUG: Node "8" has been removed from visited list
+2023-02-17 15:21:59,167 DEBUG: List of nodes visited: {0, 2}
+2023-02-17 15:21:59,167 WARNING: List of branches_to_keep: {0, 2, 10}
+2023-02-17 15:21:59,167 DEBUG: Node "8" has attribut "0"
+2023-02-17 15:21:59,167 DEBUG: Edge (2, 8) has attribut "0"
+2023-02-17 15:21:59,168 DEBUG: Element (2,8,reverse) wird mit Element (0,2,reverse) verglichen
+2023-02-17 15:21:59,168 INFO: Das Element (0,2,reverse) wird bearbeitet
+2023-02-17 15:21:59,168 DEBUG: Node "2" has been removed from visited list
+2023-02-17 15:21:59,168 DEBUG: List of nodes visited: {0}
+2023-02-17 15:21:59,168 DEBUG: Node "2" is forward or in branches_to_keep
+2023-02-17 15:21:59,168 WARNING: List of branches_to_keep: {0, 2, 10}
+2023-02-17 15:21:59,169 DEBUG: Element (0,2,reverse) wird mit Element (0,0,reverse) verglichen
+2023-02-17 15:21:59,169 INFO: Das Element (0,0,reverse) wird bearbeitet
+2023-02-17 15:21:59,169 DEBUG: Node "0" has been removed from visited list
+2023-02-17 15:21:59,169 DEBUG: List of nodes visited: set()
+2023-02-17 15:21:59,169 DEBUG: Node "0" is forward or in branches_to_keep
+2023-02-17 15:21:59,169 WARNING: List of branches_to_keep: {0, 2, 10}
+2023-02-17 15:21:59,169 DEBUG: Tree built to check if still exists another nodes and edges to prune: [(0, 2), (2, 10)]
+2023-02-17 15:21:59,170 DEBUG: Leaf nodes: []
+2023-02-17 15:21:59,170 DEBUG: Tree gebildet: [(0, 2), (2, 10)]

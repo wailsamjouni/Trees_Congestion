@@ -1,0 +1,3 @@
+2023-02-17 15:02:21,624 DEBUG: A new graph has been created: Graph with 11 nodes and 11 edges
+2023-02-17 15:02:21,625 INFO: The number of failed edges is 4
+2023-02-17 15:02:21,625 DEBUG: Generated edges are : [(5, 10), (0, 2), (1, 2), (1, 6)]
